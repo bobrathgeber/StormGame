@@ -11,18 +11,40 @@ using Microsoft.Xna.Framework.Media;
 
 namespace StormGame
 {
+
+    public enum GameState
+    {
+        LevelSelect = 1,
+        Gameplay = 2,
+        ScoreScreen = 3
+
+    }
+
     /// <summary>
-    /// This is the main type for your game
+    /// This is the main type for your gamea
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private SpriteFont _font;
+
+        public GameState gameState { get; set; }
+
+        MainMenu mainMenu;
+        private Level LoadedLevel;
+
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1200;
         }
 
         /// <summary>
@@ -34,6 +56,8 @@ namespace StormGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameState = GameState.LevelSelect;
+            mainMenu = new MainMenu();
 
             base.Initialize();
         }
@@ -46,6 +70,20 @@ namespace StormGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            _font = Content.Load<SpriteFont>("DefaultFont");
+            this.IsMouseVisible = true;
+
+            //Load Globals, these should be loaded first.
+            Globals.Font1 = _font;
+            Globals.SpriteBatch = spriteBatch;
+            Globals.Content = Content;
+            Globals.GraphicsDevice = GraphicsDevice;
+            Globals.gameState = gameState;
+            Globals.game = this;
+
+
+            mainMenu.LoadContent(Content);
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -66,9 +104,26 @@ namespace StormGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            Globals.GameTime = gameTime;
+
+            GetInputs();
+
+            switch (Globals.gameState)
+            {
+                case GameState.LevelSelect:
+                    mainMenu.Update();
+                    break;
+
+                case GameState.Gameplay:
+                    LoadedLevel.Update(gameTime);
+                    break;
+
+                case GameState.ScoreScreen:
+                    LoadedLevel.Update(gameTime);
+                    break;
+
+            }
+
 
             // TODO: Add your update logic here
 
@@ -81,11 +136,43 @@ namespace StormGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
 
-            // TODO: Add your drawing code here
+
+
+            switch (Globals.gameState)
+            {
+
+                case GameState.LevelSelect:
+                    mainMenu.Draw(spriteBatch);
+                    break;
+
+                case GameState.Gameplay:
+                    LoadedLevel.Draw();
+                    break;
+
+            }
 
             base.Draw(gameTime);
+        }
+
+        public void LoadNewLevel(Level level)
+        {
+            LoadedLevel = level;
+            //LoadedLevel.LoadContent(test);
+            Globals.gameState = GameState.Gameplay;
+        }
+
+        // Records mouse and keyboard states each frame.
+        private void GetInputs()
+        {
+
+            Globals.oldMouseState = Globals.mouseState;
+            Globals.oldKeyboardState = Globals.keyboardState;
+
+            Globals.mouseState = Mouse.GetState();
+            Globals.keyboardState = Keyboard.GetState();
+
         }
     }
 }

@@ -1,0 +1,11 @@
+popup%Welcome to Storm Game!%start
+popup%Use Arrow Keys to Move. 
+Use Spacebar to explode.%start
+dimentions%4000%2000
+startinglocation%600%600
+
+
+
+
+
+
