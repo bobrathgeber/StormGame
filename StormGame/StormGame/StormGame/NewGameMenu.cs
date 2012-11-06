@@ -25,7 +25,7 @@ namespace StormGame
         private void CreateLevelButtons()
         {
             // Make a reference to a directory.
-            DirectoryInfo di = new DirectoryInfo("Levels/");
+            DirectoryInfo di = new DirectoryInfo("../../../Levels/");
 
             // Get a reference to each file in that directory.
             FileInfo[] fiArr = di.GetFiles();

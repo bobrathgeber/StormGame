@@ -25,6 +25,8 @@ Content\WalmartBldgDead.xnb
 Content\WalmartBldgGood.xnb
 Content\WalmartBldgPoor.xnb
 Content\wheat.xnb
+Content\Tiles\DesertTile256.xnb
+Content\Tiles\GrassTile256.xnb
 Content\MenuFont.xnb
 Content\DamagePopupFont.xnb
 Content\DefaultFont.xnb
@@ -33,5 +35,3 @@ Content\Sounds\debrisHit1.xnb
 Content\Sounds\debrisHit2.xnb
 Content\Sounds\debrisHit3.xnb
 Content\Sounds\debrisHit4.xnb
-Content\Tiles\DesertTile256.xnb
-Content\Tiles\GrassTile256.xnb
