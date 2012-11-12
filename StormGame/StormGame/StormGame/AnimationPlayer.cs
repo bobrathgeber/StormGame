@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 
 namespace StormGame
 {
@@ -27,6 +28,8 @@ namespace StormGame
         }
         int frameIndex;
 
+        string currentFrame;
+
         public bool OneTimeLoopComplete
         {
             get { return oneTimeLoopComplete; }
@@ -49,38 +52,51 @@ namespace StormGame
         /// <summary>
         /// Begins or continues playback of an animation.
         /// </summary>
-        public void PlayAnimation(Animation animation)
-        {
+        public void PlayAnimation(Animation animation, string animationName, float frameTime, bool isLooping)
+        {            
             // If this animation is already running, do not restart it.
-            if (Animation == animation)
+            if (previousAnimationName == animationName)
             {
-                return;
+                if (Animation.Name == animation.Name)
+                    return;
             }
+
+            animation.SetAnimation(animationName, frameTime, isLooping);
             oneTimeLoopComplete = false;
             // Start the new animation.
             this.animation = animation;
             this.frameIndex = 0;
             this.time = 0.0f;
+            this.currentFrame = animation.Name + "-0";
+            previousAnimationName = animation.Name;
         }
+        private string previousAnimationName;
 
         /// <summary>
         /// Advances the time position and draws the current frame of the animation.
         /// </summary>
-        public Rectangle GetSourceRectangle(GameTime gameTime)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects)
         {
             if (Animation == null)
                 throw new NotSupportedException("No animation is currently playing.");
 
             // Process passing time.
             time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            while (time > Animation.FrameTime)
+            if (time > Animation.FrameTime)
             {
                 time -= Animation.FrameTime;
+                string searchName = animation.Name + "-";
+                var frames = animation.Map.Keys.Where(x => x.Contains(searchName)).ToList();
 
                 // Advance the frame index; looping or clamping as appropriate.
                 if (Animation.IsLooping)
                 {
-                    frameIndex = (frameIndex + 1) % Animation.FrameCount;
+                    frameIndex += 1;
+
+                    if (frameIndex > frames.Count() - 1)
+                        frameIndex = 0;
+
+                    currentFrame = frames[frameIndex];
                 }
                 else
                 {
@@ -94,10 +110,13 @@ namespace StormGame
             }
 
             // Calculate the source rectangle of the current frame.
-            return new Rectangle(FrameIndex * Animation.FrameWidth, 0, Animation.FrameWidth, Animation.FrameHeight);
+            Rectangle source = animation.GetFrameRectangle(currentFrame);
 
             // Draw the current frame.
-            //spriteBatch.Draw(Animation.Texture, position, source, Color.White, 0.0f, Origin, 1.0f, spriteEffects, 0.0f);
+
+            spriteBatch.Draw(animation.AnimationSheet, position, source, Color.White);
+                
+                //Animation., position, source, Color.White, 0.0f, Origin, 1.0f, spriteEffects, 0.0f);
         }
     }
 }

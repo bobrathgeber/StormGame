@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+<Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+<Item><Key>Good-0</Key><Value>0 0 64 76</Value></Item>
+<Item><Key>Good-1</Key><Value>65 0 64 76</Value></Item>
+<Item><Key>Good-2</Key><Value>130 0 64 76</Value></Item>
+<Item><Key>Good-3</Key><Value>0 77 64 76</Value></Item>
+  <Item>
+    <Key>Poor-0</Key>
+    <Value>0 0 64 76</Value>
+  </Item>
+  <Item>
+    <Key>Dead-0</Key>
+    <Value>0 0 64 76</Value>
+  </Item>
+</Asset>
+</XnaContent>

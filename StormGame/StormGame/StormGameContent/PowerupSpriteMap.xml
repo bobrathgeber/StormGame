@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+<Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
+  <Item>
+    <Key>Idle-0</Key>
+    <Value>0 0 32 32</Value>
+  </Item>
+  <Item>
+    <Key>Idle-1</Key>
+    <Value>0 0 32 32</Value>
+  </Item>
+  <Item>
+    <Key>Idle-2</Key>
+    <Value>0 0 32 32</Value>
+  </Item>
+<Item><Key>Idle-3</Key><Value>33 0 32 32</Value></Item>
+</Asset>
+</XnaContent>

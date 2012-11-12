@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace StormGame
 {
@@ -13,15 +15,6 @@ namespace StormGame
     /// </remarks>
     public class Animation
     {
-        /// <summary>
-        /// All frames in the animation arranged horizontally.
-        /// </summary>
-        public Texture2D Texture
-        {
-            get { return texture; }
-        }
-        Texture2D texture;
-
         /// <summary>
         /// Duration of time to show each frame.
         /// </summary>
@@ -55,7 +48,7 @@ namespace StormGame
         /// </summary>
         public int FrameWidth
         {
-            get { return Texture.Width / FrameCount; }
+            get { return GetFrameRectangle(Name + "-0").Width; }
         }
 
         /// <summary>
@@ -63,16 +56,29 @@ namespace StormGame
         /// </summary>
         public int FrameHeight
         {
-            get { return Texture.Height; }
+            get { return GetFrameRectangle(Name + "-0").Height; }
         }
 
         /// <summary>
         /// Constructors a new animation.
         /// </summary>        
-        public Animation(Texture2D texture, int numberOfFrames, float frameTime, bool isLooping)
+        public Animation(Texture2D spriteSheet, Dictionary<string, Rectangle> map)
         {
-            this.frameCount = numberOfFrames;
-            this.texture = texture;
+            this.AnimationSheet = spriteSheet;
+            this.Map = map;
+        }
+        public Texture2D AnimationSheet { get; set; }
+        public Dictionary<string, Rectangle> Map { get; set; }
+
+        public Rectangle GetFrameRectangle(string frameName)
+        {
+            return Map[frameName];
+        }
+
+        public string Name;
+        public void SetAnimation(string animationName, float frameTime, bool isLooping)
+        {
+            this.Name = animationName;
             this.frameTime = frameTime;
             this.isLooping = isLooping;
         }
