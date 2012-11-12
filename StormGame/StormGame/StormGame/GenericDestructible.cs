@@ -7,17 +7,17 @@ namespace StormGame
 {
     class GenericDestructible : Destructible
     {
-        public GenericDestructible(Vector2 pos, string textureFileNameGood, string textureFileNamePoor, string textureFileNameDead, float frameRate, int numOfFrames, int health)
+        public GenericDestructible(Vector2 pos, string spriteSheet, float frameRate, int health)
             : base()
         {
             Identifier = "genericdestructible";
-            animations = new List<Animation>();
+            Texture = Globals.Content.Load<Texture2D>(spriteSheet);
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(spriteSheet + "SpriteMap");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Good", frameRate, true);
+
             Health = health;
 
-            animations.Add(new Animation(Globals.Content.Load<Texture2D>(textureFileNameGood), numOfFrames, frameRate, true));
-            animations.Add(new Animation(Globals.Content.Load<Texture2D>(textureFileNamePoor), numOfFrames, frameRate, true));
-            animations.Add(new Animation(Globals.Content.Load<Texture2D>(textureFileNameDead), numOfFrames, frameRate, true));
-            animationPlayer.PlayAnimation(animations[0]);
             this.LoadContent(pos, health);
         }
 

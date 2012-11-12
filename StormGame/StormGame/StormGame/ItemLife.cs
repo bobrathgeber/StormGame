@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace StormGame.DrawableObjects
 {
@@ -11,8 +9,10 @@ namespace StormGame.DrawableObjects
 
         public ItemLife() : base()
         {
-            Texture = Globals.Content.Load<Texture2D>("Powerup_Default");
-            animationPlayer.PlayAnimation(new Animation(Texture, 1, 0.4f, true));
+            Texture = Globals.Content.Load<Texture2D>("Powerup");
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("PowerupSpriteMap");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Idle", 0.3f, true);
         }
 
         public override void Update()

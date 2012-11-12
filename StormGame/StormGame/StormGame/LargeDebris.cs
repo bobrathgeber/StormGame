@@ -27,10 +27,11 @@ namespace StormGame
             Identifier = "largedebris";
             Weight = 10;
 
-            Texture = Globals.Content.Load<Texture2D>("debris1");
-            animationPlayer.PlayAnimation(new Animation(Texture, 1, 1.0f, true));
-            
-            SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
+            Texture = Globals.Content.Load<Texture2D>("WoodDebris");
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("WoodDebrisSpriteMap");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Idle", 1.0f, true);
+
             base.Initialize();
         }
     }

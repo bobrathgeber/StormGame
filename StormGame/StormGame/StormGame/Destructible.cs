@@ -27,7 +27,7 @@ namespace StormGame
 
             Health = CurrentHealth = health;
             Position = pos;
-            Texture = animations[0].Texture;
+            //Texture = animations[0].Texture;
         }
 
         private DrawableObject GenerateDebris()
@@ -45,7 +45,7 @@ namespace StormGame
 
         public override void Update()
         {
-            SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
+            //SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
         }
 
         public override void Draw()
@@ -67,15 +67,15 @@ namespace StormGame
         {
             if (PercentHealth() > 0.4f)
             {
-                Texture = animations[0].Texture;
+                animationPlayer.PlayAnimation(animation, "Good", 0.25f, true);
             }
             else if (PercentHealth() > 0)
             {
-                Texture = animations[1].Texture;
+                animationPlayer.PlayAnimation(animation, "Poor", 0.25f, true);
             }
             else
             {
-                Texture = animations[2].Texture;
+                animationPlayer.PlayAnimation(animation, "Dead", 0.25f, true);
             }
         }
 
