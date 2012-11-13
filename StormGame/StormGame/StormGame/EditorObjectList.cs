@@ -34,13 +34,14 @@ namespace StormGame
             backgroundTiles = new Dictionary<int, Texture2D>();
 
             drawableObjects.Add(0, new StartingLocation(new Vector2(0)));
-            drawableObjects.Add(1, new GenericDestructible(new Vector2(0), "wheat", "wheat", "wheat", 0.8f, 4, 15));
+            drawableObjects.Add(1, new GenericDestructible(new Vector2(0), "Wheat", 0.8f, 15));
             drawableObjects.Add(2, new Cow(new Vector2(0)));
             drawableObjects.Add(3, new LargeDebris());
-            drawableObjects.Add(4, new GenericDestructible(new Vector2(0), "MedBldgGood", "MedBldgPoor", "MedBldgDead", 1.0f, 1, 15));
-            drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "WalmartBldgGood", "WalmartBldgPoor", "WalmartBldgDead", 1.0f, 1, 15));
-            drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "FenceLeft", "FenceLeft", "FenceLeftDead", 1.0f, 1, 15));
-            drawableObjects.Add(7, new GenericDestructible(new Vector2(0), "FenceRight", "FenceRight", "FenceRightDead", 1.0f, 1, 15));
+            drawableObjects.Add(4, new GenericDestructible(new Vector2(0), "House1", 1.0f, 15));
+            drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "Walmart", 1.0f, 15));
+            drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
+            drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
+            drawableObjects.Add(7, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
 
             backgroundTiles.Add(0, Globals.Content.Load<Texture2D>("Tiles/DesertTile256"));
             backgroundTiles.Add(1, Globals.Content.Load<Texture2D>("Tiles/GrassTile256"));
@@ -105,7 +106,10 @@ namespace StormGame
             {
                 for (int i = firstObjectDisplayed; i < drawableObjects.Count; i++)
                     if (drawableObjects[i].BoundingBox.Contains(new Point(Globals.mouseState.X, Globals.mouseState.Y)))
+                    {
                         heldObject = drawableObjects[i];
+                        drawableObjects[i].scale = Vector2.One;
+                    }
 
             }
         }

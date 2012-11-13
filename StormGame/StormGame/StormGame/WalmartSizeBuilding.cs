@@ -10,11 +10,6 @@ namespace StormGame
 {
     class WalmartSizeBuilding : Destructible
     {
-        private Texture2D tex1;
-        private Texture2D tex2;
-        private Texture2D tex3;
-
-        private List<Texture2D> textures;
         private int health;
         //**************************************************************
         //THIS IS AN OLD CLASS, REPLACED BY GenericDestructible
@@ -23,15 +18,20 @@ namespace StormGame
         public WalmartSizeBuilding(Vector2 pos)
             : base()
         {
-            textures = new List<Texture2D>();
+            //textures = new List<Texture2D>();
 
-            tex1 = Globals.Content.Load<Texture2D>("WalmartBldgGood");
-            tex2 = Globals.Content.Load<Texture2D>("WalmartBldgPoor");
-            tex3 = Globals.Content.Load<Texture2D>("WalmartBldgDead");
-            textures.Add(tex1);
-            textures.Add(tex2);
-            textures.Add(tex3);
+            //tex1 = Globals.Content.Load<Texture2D>("WalmartBldgGood");
+            //tex2 = Globals.Content.Load<Texture2D>("WalmartBldgPoor");
+            //tex3 = Globals.Content.Load<Texture2D>("WalmartBldgDead");
+            //textures.Add(tex1);
+            //textures.Add(tex2);
+            //textures.Add(tex3);
             health = 4000;
+
+            Texture = Globals.Content.Load<Texture2D>("Walmart");
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("Walmart");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Good", frameRate, true);
 
             this.LoadContent(pos, health);
         }

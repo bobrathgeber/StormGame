@@ -28,7 +28,7 @@ namespace StormGame
         }
         int frameIndex;
 
-        string currentFrame;
+        public string currentFrame;
 
         public bool OneTimeLoopComplete
         {
@@ -41,13 +41,13 @@ namespace StormGame
         /// </summary>
         private float time;
 
-        /// <summary>
-        /// Gets a texture origin at the bottom center of each frame.
-        /// </summary>
-        public Vector2 Origin
-        {
-            get { return new Vector2(Animation.FrameWidth / 2.0f, Animation.FrameHeight); }
-        }
+        ///// <summary>
+        ///// Gets a texture origin at the bottom center of each frame.
+        ///// </summary>
+        //public Vector2 Origin
+        //{
+        //    get { return new Vector2(Animation.FrameWidth / 2.0f, Animation.FrameHeight); }
+        //}
 
         /// <summary>
         /// Begins or continues playback of an animation.
@@ -75,7 +75,7 @@ namespace StormGame
         /// <summary>
         /// Advances the time position and draws the current frame of the animation.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects, float rotation, Vector2 scale, Vector2 origin)
         {
             if (Animation == null)
                 throw new NotSupportedException("No animation is currently playing.");
@@ -114,7 +114,7 @@ namespace StormGame
 
             // Draw the current frame.
 
-            spriteBatch.Draw(animation.AnimationSheet, position, source, Color.White);
+            spriteBatch.Draw(animation.AnimationSheet, position, source, Color.White, rotation, origin, scale, spriteEffects, 0);
                 
                 //Animation., position, source, Color.White, 0.0f, Origin, 1.0f, spriteEffects, 0.0f);
         }

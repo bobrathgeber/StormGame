@@ -97,7 +97,7 @@ namespace StormGame
             
             pauseOverlayTexture = CreateRectangle(Globals.GraphicsDevice.Viewport.Width, Globals.GraphicsDevice.Viewport.Height, new Color(0, 0, 0, 150));
 
-            GenericDestructible Walmart = new GenericDestructible(new Vector2(3360, 910), "WalmartBldgGood", "WalmartBldgPoor", "WalmartBldgDead", 1.0f, 1, 5000);
+            GenericDestructible Walmart = new GenericDestructible(new Vector2(3360, 910), "Walmart", 1.0f, 5000);
             drawableObjects.Add(Walmart);
             objective = new Objective(Walmart);            
         }
@@ -284,12 +284,18 @@ namespace StormGame
             if (Globals.editorMode)
             {
                 editorObjectList.Draw();
-                Globals.SpriteBatch.DrawString(Globals.Font1, "Selected Object Position", new Vector2(5, Globals.SCREEN_HEIGHT-30), Color.White);
-                if (selectedObjects.Count > 0) Globals.SpriteBatch.DrawString(Globals.Font1, "X: " + selectedObjects[0].Position.X.ToString() + "   " + "Y: " + selectedObjects[0].Position.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 15), Color.White);
+                Globals.SpriteBatch.DrawString(Globals.Font1, "Selected Object Position", new Vector2(5, Globals.SCREEN_HEIGHT-60), Color.White);
+                if (selectedObjects.Count > 0)
+                {
+                    Globals.SpriteBatch.DrawString(Globals.Font1, "  X: " + selectedObjects[0].Position.X.ToString() + "   " + "Y: " + selectedObjects[0].Position.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 45), Color.White);
+                    Globals.SpriteBatch.DrawString(Globals.Font1, "  Origin X: " + selectedObjects[0].Origin.X.ToString() + "   " + "Y: " + selectedObjects[0].Origin.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 30), Color.White);
+                    Globals.SpriteBatch.DrawString(Globals.Font1, "  Scale X: " + selectedObjects[0].scale.X.ToString() + "   " + "Y: " + selectedObjects[0].scale.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 15), Color.White);
+                
+                }
                 Globals.SpriteBatch.DrawString(Globals.Font1, "Mouse Position", new Vector2(5, Globals.SCREEN_HEIGHT), Color.White);
-                Globals.SpriteBatch.DrawString(Globals.Font1, "X: " + (mousePosition.X + _camera.Position.X).ToString() + "   " + "Y: " + (mousePosition.Y + _camera.Position.Y).ToString(), new Vector2(5, Globals.SCREEN_HEIGHT + 15), Color.White);
+                Globals.SpriteBatch.DrawString(Globals.Font1, "  X: " + (mousePosition.X + _camera.Position.X).ToString() + "   " + "Y: " + (mousePosition.Y + _camera.Position.Y).ToString(), new Vector2(5, Globals.SCREEN_HEIGHT + 15), Color.White);
                 Globals.SpriteBatch.DrawString(Globals.Font1, "Camera Position" , new Vector2(5, Globals.SCREEN_HEIGHT + 30), Color.White);
-                Globals.SpriteBatch.DrawString(Globals.Font1, "cX: " + _camera.Position.X.ToString() + "   " + "Y: " + _camera.Position.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT + 45), Color.White);
+                Globals.SpriteBatch.DrawString(Globals.Font1, "  cX: " + _camera.Position.X.ToString() + "   " + "Y: " + _camera.Position.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT + 45), Color.White);
                 if (savingLevel)
                 {
                     Globals.SpriteBatch.DrawString(Globals.Font1, levelName, Globals.SCREEN_CENTER, Color.Black);
@@ -659,7 +665,7 @@ namespace StormGame
                     //----------------------------------------------
                     if (line[0] == "mediumbuilding")
                     {
-                        drawableObjects.Add(new GenericDestructible(new Vector2(float.Parse(line[1]), float.Parse(line[2])), "barn", "MedBldgPoor", "MedBldgDead", 1f, 1, 50));
+                        drawableObjects.Add(new GenericDestructible(new Vector2(float.Parse(line[1]), float.Parse(line[2])), "House1", 1f, 50));
                     }
 
                     //Impassibles

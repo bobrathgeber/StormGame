@@ -47,7 +47,9 @@ namespace StormGame
 
             for (int i = 0; i < satalliteList.Count; i++)
             {
-                Globals.SpriteBatch.Draw(satalliteList[i].Texture, new Vector2(Position.X + (lgDebriBoxTexture.Width * (counter + 1)), Position.Y), Color.White);
+                var loc = new Vector2(Position.X + (lgDebriBoxTexture.Width * (counter + 1)), Position.Y);
+                Globals.SpriteBatch.Draw(satalliteList[i].Texture, loc, satalliteList[i].SrcRectangle, Color.White);
+                //Globals.SpriteBatch.Draw(satalliteList[i].Texture, new Vector2(Position.X + (lgDebriBoxTexture.Width * (counter + 1)), Position.Y), Color.White);
                 counter++;
             }
 

@@ -12,8 +12,8 @@ namespace StormGame
         public StormFront(Vector2 pos)
         {
             Texture = CreateRectangle(600, 2000, new Color(150, 150, 150, 150));
-            animationPlayer.PlayAnimation(new Animation(Texture, 1, 1.0f, true));
-            SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
+            //animationPlayer.PlayAnimation(new Animation(Texture, 1, 1.0f, true));
+            //SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
 
             Velocity = new Vector2(1f, 0);
             Position = pos;

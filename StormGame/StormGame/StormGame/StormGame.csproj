@@ -72,8 +72,12 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animation.cs" />
-    <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Animation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AnimationPlayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BackMenuItem.cs" />
     <Compile Include="BlockerObject.cs" />
     <Compile Include="Button.cs" />
@@ -119,7 +123,6 @@
     <Compile Include="Storm.cs" />
     <Compile Include="StormFront.cs" />
     <Compile Include="StormLayer.cs" />
-    <Compile Include="WalmartSizeBuilding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -17,7 +17,6 @@ namespace StormGame
             idle
         }
         
-        private Animation animation1;
         private Behavior behavior { get; set; }
         Vector2 targetDestination;
         bool needsNewBehavior = true;
@@ -28,11 +27,13 @@ namespace StormGame
             : base()
         {
             Identifier = "cow";
-            Position = position;
-            Texture = Globals.Content.Load<Texture2D>("CowAnimationTest");
-            animation1 = new Animation(Texture, 2, 0.4f, true);
-            animationPlayer.PlayAnimation(animation1);
+            Position = position;  
             Weight = 100;
+
+            Texture = Globals.Content.Load<Texture2D>("Cow");
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("CowSpriteMap");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Walk", 0.3f, true);
             
             this.Initialize();
             LoadContent();
@@ -46,7 +47,6 @@ namespace StormGame
 
         public override void Update()
         {
-            SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
             base.Update();
         }
 
@@ -54,7 +54,7 @@ namespace StormGame
         {
              if (needsNewBehavior)
             {
-                Vector2 distance = Vector2.Zero;//Position - storm.Position;
+                Vector2 distance = new Vector2(-1, -1);//Position - storm.Position;
 
                 if (distance.Length() < 300)
                 {

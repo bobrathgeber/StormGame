@@ -11,7 +11,7 @@ namespace StormGame
 {
     public class Storm : DrawableObject
     {        
-        public float speed = 5f;
+        public float speed = 15f;
 
         private const float rotationSpeed = 0.13f;
 

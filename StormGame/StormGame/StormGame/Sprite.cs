@@ -16,7 +16,7 @@
             this.depth = depth;
             this.Position = pos + new Vector2(Texture.Width/2, Texture.Height/2);
             this.isTiled = isTiled;
-            SrcRectangle = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
+            //SrcRectangle = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
             SetTilingDimensions(isTiled, tiledWidth, tiledHeight);
         }
 
