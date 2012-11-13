@@ -11,9 +11,10 @@ namespace StormGame
     {
         public StormFront(Vector2 pos)
         {
-            Texture = CreateRectangle(600, 2000, new Color(150, 150, 150, 150));
-            //animationPlayer.PlayAnimation(new Animation(Texture, 1, 1.0f, true));
-            //SrcRectangle = animationPlayer.GetSourceRectangle(Globals.GameTime);
+            Texture = Globals.Content.Load<Texture2D>("StormFront");
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("StormFrontSpriteMap");
+            animation = new Animation(Texture, spriteMap);
+            animationPlayer.PlayAnimation(animation, "Idle", 0.8f, true);
 
             Velocity = new Vector2(1f, 0);
             Position = pos;

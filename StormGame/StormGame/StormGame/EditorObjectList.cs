@@ -39,7 +39,7 @@ namespace StormGame
             drawableObjects.Add(3, new LargeDebris());
             drawableObjects.Add(4, new GenericDestructible(new Vector2(0), "House1", 1.0f, 15));
             drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "Walmart", 1.0f, 15));
-            drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
+            //drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
             drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
             drawableObjects.Add(7, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
 
