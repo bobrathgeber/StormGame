@@ -7,7 +7,8 @@ namespace StormGame.DrawableObjects
     class ItemLife : Item
     {
 
-        public ItemLife() : base()
+        public ItemLife()
+            : base(ItemType.Health)
         {
             Texture = Globals.Content.Load<Texture2D>("Powerup");
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("PowerupSpriteMap");
@@ -20,9 +21,10 @@ namespace StormGame.DrawableObjects
             base.Update();
         }
 
-        public override void Pickup()
+        public override void onPickup()
         {
-            onGround = false;
+            storm.stormHealth.ModifyHealth(200);
+            base.onPickup();
         }
     }
 }

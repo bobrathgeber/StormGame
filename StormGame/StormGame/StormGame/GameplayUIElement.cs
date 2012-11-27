@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace StormGame
 {
-    abstract class GameplayUIElement
+    public abstract class GameplayUIElement
     {
         public Vector2 Position;
         public virtual void Update() { }

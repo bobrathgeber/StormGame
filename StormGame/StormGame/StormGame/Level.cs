@@ -24,8 +24,7 @@ namespace StormGame
         private DrawableObjectCollection drawableObjects;
         private PopupWindowList popups;
         private LevelStatus levelStatus = LevelStatus.Playing;
-        private InventoryManager inventoryManager;
-        private Healthbar stormHealth;
+
         private StartingLocation startingLocation = new StartingLocation(new Vector2(0));
         private StormFront stormFront;
 
@@ -42,7 +41,7 @@ namespace StormGame
         private bool paused;
         private Texture2D pauseOverlayTexture;
 
-        private bool isExpanding = false;
+        
 
         private Camera _camera;
         private List<Layer> _layers;
@@ -106,8 +105,7 @@ namespace StormGame
         {
             dataObjects = new List<string>();
             drawableObjects = new DrawableObjectCollection();
-            stormHealth = new Healthbar(10000, new Vector2(20));
-            inventoryManager = new InventoryManager();
+         
 
             LoadLevelFile(levelFileName);
             storm = new Storm(startingLocation);
@@ -145,7 +143,7 @@ namespace StormGame
                 {
                     MoveStorm(gameTime);
                     UpdateDestructible(gameTime);
-                    UpdateDebris(gameTime);
+                    UpdateItems(gameTime);
                     UpdateItems();
                     UpdateStormHealth();
                     CheckObjectiveCompletion();
@@ -156,8 +154,12 @@ namespace StormGame
 
         private void UpdateItems()
         {
-            foreach (var items in drawableObjects.OfType<Item>())
-                items.Update();
+            foreach (var item in drawableObjects.OfType<Item>())
+            {
+                if (storm.withinPickupRangeOf(item) && !item.pickupBlocked)
+                    storm.inventoryManager.PickupItem(item);
+                item.Update();
+            }
         }
 
         private void UpdatePopup()
@@ -186,15 +188,15 @@ namespace StormGame
         private void UpdateStormHealth()
         {
             if(StormInFront())
-                stormHealth.ModifyHealth(-1);
+                storm.stormHealth.ModifyHealth(-1);
             else
-                stormHealth.ModifyHealth(-3);
-            if (stormHealth.CurrentHealth <= 0)
+                storm.stormHealth.ModifyHealth(-3);
+            if (storm.stormHealth.CurrentHealth <= 0)
             {
                 ResetManagers();
                 levelStatus = LevelStatus.Died;
                 popups.Add(new PopupWindow("You have Died. :("));
-                stormHealth.ResetHealth();
+                storm.stormHealth.ResetHealth();
             }
         }
 
@@ -274,13 +276,7 @@ namespace StormGame
                 layer.Draw(Globals.SpriteBatch, drawableObjects, storm);
 
             Globals.SpriteBatch.Begin();
-
-            //*************************
-            //****Draw GUI Elements****
-            //*************************
-            inventoryManager.Draw();
-            stormHealth.Draw();
-
+            
             if (Globals.editorMode)
             {
                 editorObjectList.Draw();
@@ -318,20 +314,18 @@ namespace StormGame
         }
 
 
-        private void UpdateDebris(GameTime gameTime)
+        private void UpdateItems(GameTime gameTime)
         {
-            foreach (var debris in drawableObjects.OfType<Item>())
+            foreach (var item in drawableObjects.OfType<Item>())
             {
-                debris.Update();
-                if (!debris.isOrbiting)
-                    AttachNearbyDebris(debris);
-                debris.Move(storm.Position, gameTime);
+                item.Update();
+                
                 foreach (var destructible in drawableObjects.OfType<Destructible>())
                 {
-                    if (destructible.CheckCollision(debris.BoundingBox) && debris.CooldownReady)
+                    if (destructible.CheckCollision(item.BoundingBox) && item.CooldownReady)
                     {
-                        destructible.DamageHealth(debris.Damage);
-                        debris.Collide();
+                        destructible.DamageHealth(item.Damage);
+                        item.Collide();
                     }
                 }
             }
@@ -387,8 +381,8 @@ namespace StormGame
                 else if (Globals.keyboardState.IsKeyDown(Keys.Down) || Globals.keyboardState.IsKeyDown(Keys.S))
                     Accel.Y += storm.speed * elapsedTime;
 
-                if (Globals.keyboardState.IsKeyDown(Keys.Space) && !isExpanding && !(Globals.oldKeyboardState.IsKeyDown(Keys.Space)))
-                    ExpandStorm(deltaTime);             
+                if (Globals.keyboardState.IsKeyDown(Keys.Space) && !storm.isExpanding && !(Globals.oldKeyboardState.IsKeyDown(Keys.Space)))
+                    storm.Expand(deltaTime);             
 
                 storm.Velocity += Accel;
             }
@@ -485,23 +479,12 @@ namespace StormGame
             Globals.editorMode = !Globals.editorMode;
         }
 
-        private void ExpandStorm(float deltaTime)
-        {
-            isExpanding = true;
-            foreach (Item deb in inventoryManager.satalliteList)
-            {
-                var distance = (deb.Position - storm.Position);
-                if (distance.Length() < 200)
-                    deb.Velocity += (distance * deltaTime * 20);
-            }
-            isExpanding = false;
-        }
+        
 
         private void MoveStorm(GameTime gameTime)
         {
             storm.Update(gameTime);            
             CheckImpassableCollisions(drawableObjects);
-
             UpdateCamera();
             storm.Velocity *= STOPPINGFORCE;
             storm.ApplyVelocity();        
@@ -571,7 +554,7 @@ namespace StormGame
                     if (destructible.CurrentHealth <= 0)
                     {                        
                         addDrawableObject(destructible.onDeath(storm));
-                        stormHealth.ModifyHealth(2000);
+                        storm.stormHealth.ModifyHealth(2000);
                     }
                 }
                 destructible.UpdateDamagePopups(gameTime);
@@ -601,15 +584,6 @@ namespace StormGame
             }
             rectangleTexture.SetData(color);//set the color data on the texture
             return rectangleTexture;//return the texture
-        }
-
-        public void AttachNearbyDebris(Item debris)
-        {
-            Vector2 Distance = Vector2.Subtract(debris.Position, storm.Position);
-            if (Distance.Length() <= storm.orbitPullRange)
-            {                
-                inventoryManager.Add(debris);
-            }
         }
 
         private void LoadLevelFile(string fileName)

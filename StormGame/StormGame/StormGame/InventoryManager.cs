@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace StormGame
 {
-    class InventoryManager : GameplayUIElement
+    public class InventoryManager : GameplayUIElement
     {
 
         public List<Item> satalliteList;
@@ -29,10 +29,11 @@ namespace StormGame
             maxNormal = 10;
         }
 
-        public void Add(Item debris)
+        public void AddSatallite(Item item)
         {
-            satalliteList.Add(debris);
-            debris.StartOrbiting();
+            item.onPickup();
+            satalliteList.Add(item);
+            item.StartOrbiting();
         }
 
         public override void Draw()
@@ -71,5 +72,27 @@ namespace StormGame
 
         }
 
+        public List<Item> GetDebris()
+        {
+            return satalliteList;
+        }
+
+
+        internal void PickupItem(Item item)
+        {
+            switch (item.Type)
+            {
+                case ItemType.Debris:
+                    AddSatallite(item);
+                    break;
+
+                case ItemType.Health:
+                    break;
+
+                case ItemType.Powerup:
+                    break;
+            }
+
+        }
     }
 }

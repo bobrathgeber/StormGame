@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace StormGame
 {
-    class Healthbar : GameplayUIElement
+    public class Healthbar : GameplayUIElement
     {
         private Texture2D _maxBar;
         private Texture2D _currentBar;

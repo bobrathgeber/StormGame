@@ -23,12 +23,13 @@ namespace StormGame
         float runSpeed = 0.5f;
         //float walkSpeed = 0.2f;
 
-        public Cow(Vector2 position)
-            : base()
+        public Cow(Vector2 position, bool onground = true)
+            : base(ItemType.Debris)
         {
             Identifier = "cow";
             Position = position;  
             Weight = 100;
+            onGround = onground;
 
             Texture = Globals.Content.Load<Texture2D>("Cow");
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("CowSpriteMap");
@@ -116,6 +117,11 @@ namespace StormGame
         private void Rotate(Vector2 direction)
         {
             Rotation = (float)(Math.Atan2(direction.Y, direction.X)) + 1.571f;
+        }
+
+        public override void onPickup()
+        {
+            base.onPickup();
         }
     }
 }

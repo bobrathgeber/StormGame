@@ -20,8 +20,10 @@ namespace StormGame
         private StormLayer thirdLayer;
         private StormLayer fourthLayer;
         private StormLayer fifthLayer;
-
+        public InventoryManager inventoryManager;
+        public Healthbar stormHealth;
         public float orbitPullRange;
+        public bool isExpanding = false;
 
         public Storm(StartingLocation startingPosition)
         {
@@ -31,6 +33,8 @@ namespace StormGame
             thirdLayer = new StormLayer("StormLines3", startingPosition.Position);
             fourthLayer = new StormLayer("StormLines4", startingPosition.Position);
             fifthLayer = new StormLayer("StormLines5", startingPosition.Position);
+            inventoryManager = new InventoryManager();
+            stormHealth = new Healthbar(10000, new Vector2(20));   
             Position = startingPosition.Position;
             Velocity = new Vector2();
             _color = new Color(255, 255, 255, 70);
@@ -40,7 +44,10 @@ namespace StormGame
 
         public void Update(GameTime gameTime)
         {
-            UpdateStormLayers();            
+            UpdateStormLayers();
+            inventoryManager.Update();
+            foreach (var item in inventoryManager.GetDebris())
+                item.Move(Position, Globals.GameTime);
         }
 
         private void UpdateStormLayers()
@@ -75,7 +82,8 @@ namespace StormGame
             thirdLayer.Draw();
             secondLayer.Draw();
             firstLayer.Draw();
-            //base.Draw();
+            inventoryManager.Draw();
+            stormHealth.Draw();
         }
 
         public void ApplyVelocity()
@@ -87,6 +95,27 @@ namespace StormGame
         {
             Velocity *= direction;
             Velocity *= 0.8f;
+        }
+
+        public void Expand(float deltaTime)
+        {
+            isExpanding = true;
+            foreach (Item deb in inventoryManager.satalliteList)
+            {
+                var distance = (deb.Position - Position);
+                if (distance.Length() < 200)
+                    deb.Velocity += (distance * deltaTime * 20);
+            }
+            isExpanding = false;
+        }
+
+        public bool withinPickupRangeOf(DrawableObject obj)
+        {
+            Vector2 Distance = Vector2.Subtract(obj.Position, Position);
+            if (Distance.Length() <= orbitPullRange)
+                return true;
+            else
+                return false;
         }
     }
 }

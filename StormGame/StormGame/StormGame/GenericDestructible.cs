@@ -24,7 +24,6 @@ namespace StormGame
         public override DrawableObject onDeath(Storm storm)
         {
             isAlive = false;
-            //droppedObject.Eject(Position);
             
             ItemLife item = new ItemLife();
             item.DropOnGround(Position);

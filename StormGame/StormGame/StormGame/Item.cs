@@ -21,16 +21,15 @@ namespace StormGame
         private float Cooldown;
         private float time;
         private float radius;
-        public bool isSpecial;
-        private bool isEjecting;
         private float pickUpDelay;
         private float pickUpDelayTimer;
 
+        protected ItemType type = ItemType.Health;
+        public ItemType Type { get { return type; } }
         protected Storm storm;
         protected bool onGround;
         protected bool inInventory;
-        private bool dropDelay;
-        private float dropDelayTime;
+        public bool pickupBlocked = false;
 
         private List<SoundEffect> hitSounds;
 
@@ -50,8 +49,9 @@ namespace StormGame
 
         private float bounce;
 
-        public Item()
+        public Item(ItemType type)
         {
+            this.type = type;
             LoadContent();
         }
 
@@ -69,49 +69,60 @@ namespace StormGame
         {
             if (onGround)
             {
-                // Bounce along a sine curve over time.
-                // Include the X coordinate so that neighboring gems bounce in a nice wave pattern.            
-                double t = Globals.GameTime.TotalGameTime.TotalSeconds * BounceRate + Position.X * BounceSync;
-                bounce = (float)Math.Sin(t) * BounceHeight * Texture.Height;
-                Position += new Vector2(0.0f, bounce);
-
-                if (dropDelay)
+                switch (type)
                 {
-                    dropDelayTime += (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-                    if (dropDelayTime > 0.4f)
-                    {
-                        dropDelay = false;
-                        dropDelayTime = 0f;
-                    }
+                    case ItemType.Debris:
+                        Velocity *= AIRDRAG;
+                        UpdateAI();
+                        break;
+
+                    case ItemType.Health:
+                        // Bounce along a sine curve over time.
+                        // Include the X coordinate so that neighboring gems bounce in a nice wave pattern.            
+                        double t = Globals.GameTime.TotalGameTime.TotalSeconds * BounceRate + Position.X * BounceSync;
+                        bounce = (float)Math.Sin(t) * BounceHeight * Texture.Height;
+                        Position += new Vector2(0.0f, bounce);
+                        break;
+
+                    case ItemType.Powerup:
+                        // Bounce along a sine curve over time.
+                        // Include the X coordinate so that neighboring gems bounce in a nice wave pattern.            
+                        double t2 = Globals.GameTime.TotalGameTime.TotalSeconds * BounceRate + Position.X * BounceSync;
+                        bounce = (float)Math.Sin(t2) * BounceHeight * Texture.Height;
+                        Position += new Vector2(0.0f, bounce);
+                        break;
+                }
+
+                pickUpDelayTimer += (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                if (pickUpDelayTimer > pickUpDelay)
+                {
+                    pickupBlocked = false;
                 }
             }
-
-            if (isOrbiting)
-            {
-                time += (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-                Rotation = (Rotation + -0.02f) % (MathHelper.Pi * 2);
-                UpdateDamage();
-
-                if (!CooldownReady && time > Cooldown)
-                {
-                    CooldownReady = true;
-                }
-            }
-            //else if (isEjecting)
-            //{
-            //    pickUpDelay += (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
-            //    if (pickUpDelay >= pickUpDelayTimer)
-            //    {
-            //        isEjecting = false;
-            //        pickUpDelay = 0.0f;
-            //        Velocity *= AIRDRAG;
-            //    }
-            //}
             else
             {
-                Velocity *= AIRDRAG;
-                UpdateAI();
+                if (isOrbiting)
+                {
+                    time += (float)Globals.GameTime.ElapsedGameTime.TotalSeconds;
+                    Rotation = (Rotation + -0.02f) % (MathHelper.Pi * 2);
+                    UpdateDamage();
+
+                    if (!CooldownReady && time > Cooldown)
+                        CooldownReady = true;
+                }
             }
+        }
+
+        public void Eject(Vector2 centerPoint, float launchSpeed = 5, float delaytime = 1.0f)
+        {
+            pickUpDelay = delaytime;
+            pickUpDelayTimer = 0f;
+            pickupBlocked = true;
+
+            Random rand = new Random();
+            Velocity = new Vector2(rand.Next(5) - 3, rand.Next(5) - 3);
+
+            //Velocity = new Vector2(1, 1) * launchSpeed;
         }
 
         public void DropOnGround(Vector2 position)
@@ -119,8 +130,7 @@ namespace StormGame
             Position = position;
             onGround = true;
             inInventory = false;
-            dropDelay = true;
-            dropDelayTime = 0f;
+            Eject(position);
         }
 
         Texture2D _debugLine;
@@ -143,7 +153,11 @@ namespace StormGame
 
         public virtual void DropOnGround() { }
 
-        public virtual void Pickup() { }
+        public virtual void onPickup()
+        {
+            onGround = false;
+            pickupBlocked = true;
+        }
 
         public virtual void Use() { }
 
@@ -199,21 +213,6 @@ namespace StormGame
             Position += Velocity;
 
         }
-
-        //public void Eject(Vector2 centerPoint)
-        //{
-        //    isEjecting = true;
-        //    isOrbiting = false;
-        //    this.Position = centerPoint;
-
-        //    pickUpDelayTimer = 1.0f;
-
-        //    Random rand = new Random();
-        //    if (Velocity == new Vector2(0))
-        //    {
-        //        Velocity = new Vector2(rand.Next(5) - 3, rand.Next(5) - 3);
-        //    }
-        //}
 
         private void UpdateDamage()
         {

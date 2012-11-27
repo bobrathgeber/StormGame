@@ -10,13 +10,14 @@ namespace StormGame
 {
     class LargeDebris : Item
     {
-        public LargeDebris() : base()
+        public LargeDebris()
+            : base(ItemType.Debris)
         {
             this.Initialize();
         }
 
         public LargeDebris(Vector2 pos)
-            : base()
+            : base(ItemType.Debris)
         {
             this.Initialize();
             Position = pos;
@@ -33,6 +34,11 @@ namespace StormGame
             animationPlayer.PlayAnimation(animation, "Idle", 1.0f, true);
 
             base.Initialize();
+        }
+
+        public override void onPickup()
+        {
+            base.onPickup();
         }
     }
 }
