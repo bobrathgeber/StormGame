@@ -36,9 +36,9 @@ namespace StormGame
             base.Initialize();
         }
 
-        public override void onPickup()
+        public override void onPickup(Storm storm)
         {
-            base.onPickup();
+            base.onPickup(storm);
         }
     }
 }

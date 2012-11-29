@@ -33,7 +33,7 @@ namespace StormGame
             thirdLayer = new StormLayer("StormLines3", startingPosition.Position);
             fourthLayer = new StormLayer("StormLines4", startingPosition.Position);
             fifthLayer = new StormLayer("StormLines5", startingPosition.Position);
-            inventoryManager = new InventoryManager();
+            inventoryManager = new InventoryManager(this);
             stormHealth = new Healthbar(10000, new Vector2(20));   
             Position = startingPosition.Position;
             Velocity = new Vector2();

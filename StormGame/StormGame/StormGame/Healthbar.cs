@@ -65,12 +65,12 @@ namespace StormGame
 
         public void Draw()
         {
-            Globals.SpriteBatch.Draw(_maxBar, Bounds, Color.Red);
-            Globals.SpriteBatch.Draw(_currentBar, CurrentBar, Color.Green);
+            Globals.SpriteBatch.Draw(_maxBar, new Rectangle(Bounds.Left + (int)Globals.cameraPosition.X, Bounds.Top + (int)Globals.cameraPosition.Y, Bounds.Width, Bounds.Height), Color.Red);
+            Globals.SpriteBatch.Draw(_currentBar, new Rectangle(CurrentBar.Left + (int)Globals.cameraPosition.X, CurrentBar.Top + (int)Globals.cameraPosition.Y, CurrentBar.Width, CurrentBar.Height), Color.Green);
 
             string sizeString = CurrentHealth.ToString() + " of " + MaxHealth.ToString();
 
-            DrawShadowedString(Globals.Font1, sizeString, GetTextPosition(), Color.BlanchedAlmond);
+            DrawShadowedString(Globals.Font1, sizeString, GetTextPosition() + Globals.cameraPosition, Color.BlanchedAlmond);
         }
 
         private void DrawShadowedString(SpriteFont font, string value, Vector2 position, Color color)

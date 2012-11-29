@@ -11,16 +11,17 @@ namespace StormGame
     {
 
         public List<Item> satalliteList;
-
+        private Storm storm;
         private Texture2D smDebriBoxTexture;
         private Texture2D lgDebriBoxTexture;
         private int maxSpecial;
         private int maxNormal;
 
-        public InventoryManager()
+        public InventoryManager(Storm storm)
         {
             smDebriBoxTexture = Globals.Content.Load<Texture2D>("smDebrisBox");
             lgDebriBoxTexture = Globals.Content.Load<Texture2D>("lgDebrisBox");
+            this.storm = storm;
             Position = new Vector2(50);
 
             satalliteList = new List<Item>();
@@ -31,7 +32,7 @@ namespace StormGame
 
         public void AddSatallite(Item item)
         {
-            item.onPickup();
+            item.onPickup(storm);
             satalliteList.Add(item);
             item.StartOrbiting();
         }
@@ -43,13 +44,13 @@ namespace StormGame
 
             for (int i = 0; i < satalliteList.Count; i++)
             {
-                Globals.SpriteBatch.Draw(lgDebriBoxTexture, new Vector2(Position.X + (lgDebriBoxTexture.Width * (i+1)), Position.Y), Color.White);
+                Globals.SpriteBatch.Draw(lgDebriBoxTexture, new Vector2(Position.X + (lgDebriBoxTexture.Width * (i+1)), Position.Y) + Globals.cameraPosition, Color.White);
             }
 
             for (int i = 0; i < satalliteList.Count; i++)
             {
                 var loc = new Vector2(Position.X + (lgDebriBoxTexture.Width * (counter + 1)), Position.Y);
-                Globals.SpriteBatch.Draw(satalliteList[i].Texture, loc, satalliteList[i].SrcRectangle, Color.White);
+                Globals.SpriteBatch.Draw(satalliteList[i].Texture, loc + Globals.cameraPosition, satalliteList[i].SrcRectangle, Color.White);
                 //Globals.SpriteBatch.Draw(satalliteList[i].Texture, new Vector2(Position.X + (lgDebriBoxTexture.Width * (counter + 1)), Position.Y), Color.White);
                 counter++;
             }
@@ -87,6 +88,7 @@ namespace StormGame
                     break;
 
                 case ItemType.Health:
+                    item.onPickup(storm);
                     break;
 
                 case ItemType.Powerup:

@@ -119,9 +119,9 @@ namespace StormGame
             Rotation = (float)(Math.Atan2(direction.Y, direction.X)) + 1.571f;
         }
 
-        public override void onPickup()
+        public override void onPickup(Storm storm)
         {
-            base.onPickup();
+            base.onPickup(storm);
         }
     }
 }

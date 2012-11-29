@@ -29,6 +29,7 @@ namespace StormGame
         public float Weight;
         public bool isOrbiting = false;
         public bool Selected = false;
+        public bool readyToRemove = false;
 
         //Visual Variables
         public Texture2D Texture { get; set; }        
@@ -79,9 +80,10 @@ namespace StormGame
 
         public virtual void Draw()
         {
-            if (animation != null)
+
+            if (animation != null && (!Invisible || Globals.editorMode))
                 animationPlayer.Draw(Globals.GameTime, Globals.SpriteBatch, Position, SpriteEffects.None, Rotation, scale, Origin);
-            else if (Texture != null)
+            else if (Texture != null && (!Invisible || Globals.editorMode))
                 Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
 
             if (this.Selected)

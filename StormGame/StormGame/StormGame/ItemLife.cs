@@ -21,10 +21,10 @@ namespace StormGame.DrawableObjects
             base.Update();
         }
 
-        public override void onPickup()
+        public override void onPickup(Storm storm)
         {
             storm.stormHealth.ModifyHealth(200);
-            base.onPickup();
+            base.onPickup(storm);
         }
     }
 }

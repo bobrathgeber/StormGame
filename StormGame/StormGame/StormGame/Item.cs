@@ -153,7 +153,7 @@ namespace StormGame
 
         public virtual void DropOnGround() { }
 
-        public virtual void onPickup()
+        public virtual void onPickup(Storm storm)
         {
             onGround = false;
             pickupBlocked = true;
