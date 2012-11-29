@@ -23,7 +23,8 @@ namespace StormGame.DrawableObjects
 
         public override void onPickup(Storm storm)
         {
-            storm.stormHealth.ModifyHealth(200);
+            storm.stormHealth.ModifyHealth(2000);
+            readyToRemove = true;
             base.onPickup(storm);
         }
     }

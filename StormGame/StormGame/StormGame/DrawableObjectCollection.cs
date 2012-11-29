@@ -13,6 +13,15 @@ namespace StormGame
             return this.OfType<T>().ToList<T>();
         }
 
+        public void RemoveFlaggedObjects()
+        {
+            for(int i = Count-1; i>=0; i--)
+            {
+                if (this[i].readyToRemove)
+                    RemoveAt(i);
+            }
+        }
+
         public void QueueRemoveObject(DrawableObject d)
         {
             removeQueue.Add(d);

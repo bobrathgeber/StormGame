@@ -86,7 +86,7 @@ namespace StormGame
             else if (Texture != null && (!Invisible || Globals.editorMode))
                 Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
 
-            if (this.Selected)
+            if (this.Selected && Globals.editorMode)
                 DrawBoundingBox();
 
             //if (Texture != null)

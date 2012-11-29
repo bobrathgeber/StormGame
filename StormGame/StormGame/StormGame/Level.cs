@@ -150,6 +150,8 @@ namespace StormGame
                     stormFront.Update();
                 }                
             }
+
+            drawableObjects.RemoveFlaggedObjects();
         }
 
         private void UpdateItems()
