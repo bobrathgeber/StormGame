@@ -45,6 +45,7 @@ namespace StormGame
 
         private Camera _camera;
         private List<Layer> _layers;
+        private Texture2D _backgroundTile;
 
         private Objective objective;
         //private SmokeParticleSystem smoke;
@@ -570,6 +571,13 @@ namespace StormGame
                 drawableObjects.Add(dObj);
         }
 
+        public void ChangeBackgroundTile(Texture2D tile)
+        {
+            _backgroundTile = tile;
+            _layers[0].ResetTiles();
+            _layers[0].Sprites.Add(new Sprite(_backgroundTile, Vector2.Zero, 0, true, Width, Height));
+        }
+
         private void UpdateCamera()
         {
             _camera.Position = storm.Position - _camera.Origin;
@@ -630,8 +638,11 @@ namespace StormGame
                     //----------------------------------------------
                     if (line[0] == "tile")
                     {
-                        if(line[4] == "true")
-                            _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0,true, Width,Height));
+                        if (line[4] == "true")
+                        {
+                            _backgroundTile = Globals.Content.Load<Texture2D>(line[3]);
+                            _layers[0].Sprites.Add(new Sprite(_backgroundTile, new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0, true, Width, Height));                        
+                        }
                         else
                             _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0));
                     }

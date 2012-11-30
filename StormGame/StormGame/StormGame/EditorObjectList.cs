@@ -22,6 +22,7 @@ namespace StormGame
         private Dictionary<int, Texture2D> backgroundTiles;
         private DrawableObject heldObject;
         private ObjectList objectList;
+        private Texture2D pixil = new Texture2D(Globals.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);  
 
         public EditorObjectList()
         {
@@ -75,17 +76,33 @@ namespace StormGame
 
         private void DragOutNewObject(Level level)
         {
-            if (Globals.mouseState.LeftButton == ButtonState.Pressed)
+            switch (objectList)
             {
-                PickupNewObject();
-                if (heldObject != null)
-                {
-                    level.DeselectAll();
-                    MoveHeldObject();
-                }
+                case ObjectList.Destructibles:
+                    if (Globals.mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        PickupNewObject();
+                        if (heldObject != null)
+                        {
+                            level.DeselectAll();
+                            MoveHeldObject();
+                        }
+                    }
+                    else if (heldObject != null && Globals.mouseState.LeftButton == ButtonState.Released)
+                        DropNewObject(level);
+                    break;
+
+                case ObjectList.BackgroundTiles:
+                    if (Globals.mouseState.LeftButton == ButtonState.Pressed && Globals.oldMouseState.LeftButton == ButtonState.Released)
+                    {
+                        for (int i = 0; i < backgroundTiles.Count; i++)
+                            if (new Rectangle(5, 5 + i * backgroundTiles[i].Height, backgroundTiles[i].Width, backgroundTiles[i].Height).Contains(new Point(Globals.mouseState.X, Globals.mouseState.Y)))
+                            {
+                                level.ChangeBackgroundTile(backgroundTiles[i]);
+                            }
+                    }
+                    break;
             }
-            else if (heldObject != null && Globals.mouseState.LeftButton == ButtonState.Released)
-                DropNewObject(level);
         }
 
         private void DropNewObject(Level level)
@@ -136,8 +153,21 @@ namespace StormGame
 
         public void Draw()
         {
-            for(int i = firstObjectDisplayed; i<drawableObjects.Count; i++)
-                drawableObjects[i].Draw();
+            switch (objectList)
+            {
+                case ObjectList.Destructibles:
+                    for (int i = firstObjectDisplayed; i < drawableObjects.Count; i++)
+                        drawableObjects[i].Draw();
+                    break;
+
+                case ObjectList.BackgroundTiles:
+                    for (int i = 0; i < backgroundTiles.Count; i++)
+                    {
+                        Globals.SpriteBatch.Draw(backgroundTiles[i], new Vector2(5, 5 + i * backgroundTiles[i].Height), Color.White);
+                        DrawBoundingBox(backgroundTiles[i], new Vector2(5, 5 + i * backgroundTiles[i].Height));
+                    }
+                    break;
+            }
         }
 
         private void UpdatePosition()
@@ -148,6 +178,20 @@ namespace StormGame
                 drawableObjects[i].Position = new Vector2(drawableObjects[i].Width / 2, bottomOfPrevObj + drawableObjects[i].Height/2);
                 bottomOfPrevObj = bottomOfPrevObj + (int)drawableObjects[i].Height;
             }
+        }
+
+        private void DrawBoundingBox(Texture2D texture, Vector2 position)
+        {            
+            pixil.SetData(new[] { Color.Black });
+            float length1 = Vector2.Distance(new Vector2(texture.Bounds.X, texture.Bounds.Y), new Vector2(texture.Bounds.X + texture.Width, texture.Bounds.Y));
+            float length2 = Vector2.Distance(new Vector2(texture.Bounds.X + texture.Width, texture.Bounds.Y), new Vector2(texture.Bounds.X + texture.Width, texture.Bounds.Y+texture.Height));
+            float length3 = Vector2.Distance(new Vector2(texture.Bounds.X + texture.Width, texture.Bounds.Y + texture.Height), new Vector2(texture.Bounds.X, texture.Bounds.Y + texture.Height));
+            float length4 = Vector2.Distance(new Vector2(texture.Bounds.X, texture.Bounds.Y + texture.Height), new Vector2(texture.Bounds.X, texture.Bounds.Y));
+
+            Globals.SpriteBatch.Draw(pixil, new Vector2(position.X, position.Y), null, Color.White, MathHelper.ToRadians(270), Vector2.Zero, new Vector2(3, length1), SpriteEffects.None, 0);
+            Globals.SpriteBatch.Draw(pixil, new Vector2(position.X + texture.Width, position.Y), null, Color.White, MathHelper.ToRadians(90), Vector2.Zero, new Vector2(length2, 3), SpriteEffects.None, 0);
+            Globals.SpriteBatch.Draw(pixil, new Vector2(position.X + texture.Width, position.Y + texture.Height), null, Color.White, MathHelper.ToRadians(90), Vector2.Zero, new Vector2(3, length3), SpriteEffects.None, 0);
+            Globals.SpriteBatch.Draw(pixil, new Vector2(position.X, position.Y + texture.Height), null, Color.White, MathHelper.ToRadians(270), Vector2.Zero, new Vector2(length4, 3), SpriteEffects.None, 0);
         }
     }
 }

@@ -73,6 +73,7 @@ namespace StormGame
                 {
                     case ItemType.Debris:
                         Velocity *= AIRDRAG;
+                        Position += Velocity;
                         UpdateAI();
                         break;
 
@@ -120,9 +121,9 @@ namespace StormGame
             pickupBlocked = true;
 
             Random rand = new Random();
-            Velocity = new Vector2(rand.Next(5) - 3, rand.Next(5) - 3);
+            Velocity = new Vector2((float)rand.NextDouble() - rand.Next(1), (float)rand.NextDouble() - rand.Next(1));
 
-            //Velocity = new Vector2(1, 1) * launchSpeed;
+            Velocity *= launchSpeed;
         }
 
         public void DropOnGround(Vector2 position)
@@ -130,7 +131,7 @@ namespace StormGame
             Position = position;
             onGround = true;
             inInventory = false;
-            Eject(position);
+            Eject(position,5,2.0f);
         }
 
         Texture2D _debugLine;

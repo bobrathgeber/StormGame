@@ -23,10 +23,15 @@ namespace StormGame
 
         public override DrawableObject onDeath(Storm storm)
         {
-            isAlive = false;
-            
-            ItemLife item = new ItemLife();
-            item.DropOnGround(Position);
+            isAlive = false;    
+
+            Item item = GetRandomItem();
+            if (item != null)
+            {
+                item.DropOnGround(Position);
+                //if (item.Type == ItemType.Debris)
+                //    item.Eject(item.Position);
+            }
 
             return item;
         }

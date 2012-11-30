@@ -91,5 +91,17 @@ namespace StormGame
 
         public abstract DrawableObject onDeath(Storm storm);
 
+        protected Item GetRandomItem()
+        {
+            Random rand = new Random();
+            int num = rand.Next(3);
+            if (num == 0)
+                return new ItemLife();
+            else if (num == 1)
+                return new LargeDebris();
+            else
+                return null;
+        }
+
     }
 }

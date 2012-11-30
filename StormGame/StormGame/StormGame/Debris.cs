@@ -16,9 +16,7 @@ using Microsoft.Xna.Framework.Audio;
 
 
 namespace StormGame
-{
-    
-
+{  
     public abstract class Debris : DrawableObject
     {        
         public bool CooldownReady;               

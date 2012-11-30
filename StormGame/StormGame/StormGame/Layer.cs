@@ -17,6 +17,11 @@
 
         public List<DrawableObject> Sprites { get; private set; }
 
+        public void ResetTiles()
+        {
+            Sprites = new List<DrawableObject>();
+        }
+
         public void Draw(SpriteBatch spriteBatch, List<DrawableObject> drawableObjects, Storm storm)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetViewMatrix(Parallax));
