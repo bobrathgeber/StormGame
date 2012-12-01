@@ -10,7 +10,8 @@ namespace StormGame
         public GenericDestructible(Vector2 pos, string spriteSheet, float frameRate, int health)
             : base()
         {
-            Identifier = "genericdestructible";
+            this.ObjectType = DrawableObjectType.Destructible;
+            Identifier = spriteSheet;
             Texture = Globals.Content.Load<Texture2D>(spriteSheet);
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(spriteSheet + "SpriteMap");
             animation = new Animation(Texture, spriteMap);

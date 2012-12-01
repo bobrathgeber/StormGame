@@ -16,6 +16,10 @@ namespace StormGame
         
         private List<DamagePopup> DamagePopups;
     
+        public override string  GetSaveData()
+        {
+            return "Destructible%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + frameRate + "%" + Health;
+        }
 
         public void LoadContent(Vector2 pos, int health)
         {

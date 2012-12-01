@@ -9,6 +9,8 @@ namespace StormGame
 {
     class StormFront : DrawableObject
     {
+        Vector2 _startingPosition;
+
         public StormFront(Vector2 pos)
         {
             Texture = Globals.Content.Load<Texture2D>("StormFront");
@@ -17,7 +19,12 @@ namespace StormGame
             animationPlayer.PlayAnimation(animation, "Idle", 0.8f, true);
 
             Velocity = new Vector2(1f, 0);
-            Position = pos;
+            _startingPosition = Position = pos;
+        }
+
+        public override string GetSaveData()
+        {
+            return "Stormfront%" + _startingPosition.X + "%" + _startingPosition.Y;
         }
 
         public override void Update()

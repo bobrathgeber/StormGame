@@ -49,10 +49,16 @@ namespace StormGame
 
         private float bounce;
 
-        public Item(ItemType type)
+        public Item(ItemType itemType)
         {
-            this.type = type;
+            ObjectType = DrawableObjectType.Item;
+            this.type = itemType;
             LoadContent();
+        }
+
+        public override string GetSaveData()
+        {
+            return "Item%" + type + "%" + Identifier + "%" + Position.X + "%" + Position.Y;
         }
 
         public override void LoadContent()

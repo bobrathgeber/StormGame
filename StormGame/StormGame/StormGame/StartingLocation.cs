@@ -13,5 +13,10 @@ namespace StormGame
             Invisible = true;
             isAlive = false;
         }
+
+        public override string GetSaveData()
+        {
+            return "startinglocation%" + Position.X + "%" + Position.Y;
+        }
     }
 }

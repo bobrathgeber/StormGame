@@ -9,15 +9,25 @@
         public int depth;
         private bool isTiled;
         private Vector2 tiledDimensions;
+        private int _tiledWidth;
+        private int _tiledHeight;
 
-        public Sprite(Texture2D texture, Vector2 pos, int depth, bool isTiled=false, int tiledWidth = 0, int tiledHeight=0)
+        public Sprite(string texture, Vector2 pos, int depth, bool isTiled=false, int tiledWidth = 0, int tiledHeight=0)
         {
-            this.Texture = texture;
+            Identifier = texture;
+            this.Texture = Globals.Content.Load<Texture2D>(texture);
             this.depth = depth;
             this.Position = pos + new Vector2(Texture.Width/2, Texture.Height/2);
             this.isTiled = isTiled;
+            _tiledHeight = tiledHeight;
+            _tiledWidth = tiledWidth;
             //SrcRectangle = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
             SetTilingDimensions(isTiled, tiledWidth, tiledHeight);
+        }
+
+        public override string GetSaveData()
+        {
+            return "Sprite%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + depth + "%" + isTiled + "%" + _tiledWidth + "%" + _tiledHeight;
         }
 
         private void SetTilingDimensions(bool isTiled, int tiledWidth, int tiledHeight)

@@ -5,16 +5,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StormGame
 {
-    //public enum LevelStatus
-    //{
-    //    Playing,
-    //    Died,
-    //    Complete
-    //}
+    public enum DrawableObjectType
+    {
+        Destructible,
+        Item,
+        Sprite
+    }
 
     public abstract class DrawableObject
     {
         public string Identifier;
+        public DrawableObjectType ObjectType;
 
         //Physics Variables
         public Vector2 Velocity = new Vector2(0);
@@ -60,6 +61,11 @@ namespace StormGame
         {
         }
 
+        public virtual string GetSaveData()
+        {
+            return "";
+        }
+
         public bool CheckCollision(Vector2 v)
         {
             bool isColliding = BoundingBox.Contains(new Point((int)v.X, (int)v.Y));
@@ -80,25 +86,13 @@ namespace StormGame
 
         public virtual void Draw()
         {
-
             if (animation != null && (!Invisible || Globals.editorMode))
                 animationPlayer.Draw(Globals.GameTime, Globals.SpriteBatch, Position, SpriteEffects.None, Rotation, scale, Origin);
             else if (Texture != null && (!Invisible || Globals.editorMode))
                 Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
 
             if (this.Selected && Globals.editorMode)
-                DrawBoundingBox();
-
-            //if (Texture != null)
-            //{
-                
-            //        Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, new Color(105, 200, 105, 150), Rotation, Origin, scale, SpriteEffects.None, 0);
-                    
-            //    }
-            //    else if (!Invisible || Globals.editorMode)
-            //        Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
-            //}
-            
+                DrawBoundingBox();          
         }
 
         public virtual void Update() { }

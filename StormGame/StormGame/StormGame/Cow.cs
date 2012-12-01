@@ -20,19 +20,19 @@ namespace StormGame
         private Behavior behavior { get; set; }
         Vector2 targetDestination;
         bool needsNewBehavior = true;
-        float runSpeed = 0.5f;
+        float runSpeed = 0.1f;
         //float walkSpeed = 0.2f;
 
         public Cow(Vector2 position, bool onground = true)
             : base(ItemType.Debris)
         {
-            Identifier = "cow";
+            Identifier = "Cow";
             Position = position;  
             Weight = 100;
             onGround = onground;
 
-            Texture = Globals.Content.Load<Texture2D>("Cow");
-            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("CowSpriteMap");
+            Texture = Globals.Content.Load<Texture2D>(Identifier);
+            Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(Identifier+"SpriteMap");
             animation = new Animation(Texture, spriteMap);
             animationPlayer.PlayAnimation(animation, "Walk", 0.3f, true);
             
@@ -56,7 +56,6 @@ namespace StormGame
              if (needsNewBehavior)
             {
                 Vector2 distance = new Vector2(-1, -1);//Position - storm.Position;
-
                 if (distance.Length() < 300)
                 {
                     distance.Normalize();

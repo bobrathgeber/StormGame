@@ -18,6 +18,11 @@ namespace StormGame
             
         }
 
+        public override string GetSaveData()
+        {
+            return "blockerobject%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + scale.Y +"%" + Invisible;
+        }
+
         private void InitializeVariables(Vector2 pos, Vector2 scale)
         {
             Position = pos;

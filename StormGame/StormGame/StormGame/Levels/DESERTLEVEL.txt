@@ -1,0 +1,27 @@
+popup%Welcome to Storm Game!%start
+popup%Use Arrow Keys to Move. 
+Use Spacebar to explode.%start
+startinglocation%600%600
+dimentions%4000%2000
+startinglocation%904%536
+blockerobject%-50%-50%4100%50%False
+blockerobject%4000%0%50%2000%False
+blockerobject%-50%2000%4100%50%False
+blockerobject%-50%0%50%2000%False
+startinglocation%904%536
+Stormfront%0%1000
+Destructible%Walmart%3360%910%1%5000
+Destructible%House1%491%342%1%15
+Destructible%Wheat%481%399%1%15
+Destructible%Wheat%519%400%1%15
+Destructible%Wheat%559%400%1%15
+Destructible%Wheat%599%399%1%15
+Destructible%Wheat%638%397%1%15
+Destructible%RightFence%645%435%1%15
+Destructible%RightFence%558%436%1%15
+Destructible%RightFence%473%437%1%15
+Destructible%RightFence%392%437%1%15
+Item%Debris%cow%641%529
+Item%Debris%cow%598%532
+Item%Debris%cow%685%534
+Sprite%Tiles/DesertTile256%128%128%0%True%4000%2000

@@ -19,7 +19,7 @@ namespace StormGame
     {
         private int firstObjectDisplayed=0;
         private Dictionary<int,DrawableObject> drawableObjects;
-        private Dictionary<int, Texture2D> backgroundTiles;
+        private Dictionary<int, Sprite> backgroundTiles;
         private DrawableObject heldObject;
         private ObjectList objectList;
         private Texture2D pixil = new Texture2D(Globals.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);  
@@ -32,7 +32,7 @@ namespace StormGame
         public void LoadContent()
         {
             drawableObjects = new Dictionary<int, DrawableObject>();
-            backgroundTiles = new Dictionary<int, Texture2D>();
+            backgroundTiles = new Dictionary<int, Sprite>();
 
             drawableObjects.Add(0, new StartingLocation(new Vector2(0)));
             drawableObjects.Add(1, new GenericDestructible(new Vector2(0), "Wheat", 0.8f, 15));
@@ -44,8 +44,8 @@ namespace StormGame
             drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
             drawableObjects.Add(7, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
 
-            backgroundTiles.Add(0, Globals.Content.Load<Texture2D>("Tiles/DesertTile256"));
-            backgroundTiles.Add(1, Globals.Content.Load<Texture2D>("Tiles/GrassTile256"));
+            backgroundTiles.Add(0, new Sprite("Tiles/DesertTile256",Vector2.Zero, 0, false));
+            backgroundTiles.Add(1, new Sprite("Tiles/GrassTile256",Vector2.Zero, 0, false));
 
             for (int i = 0; i < drawableObjects.Count; i++)
                 drawableObjects[i].Update();
@@ -96,9 +96,9 @@ namespace StormGame
                     if (Globals.mouseState.LeftButton == ButtonState.Pressed && Globals.oldMouseState.LeftButton == ButtonState.Released)
                     {
                         for (int i = 0; i < backgroundTiles.Count; i++)
-                            if (new Rectangle(5, 5 + i * backgroundTiles[i].Height, backgroundTiles[i].Width, backgroundTiles[i].Height).Contains(new Point(Globals.mouseState.X, Globals.mouseState.Y)))
+                            if (new Rectangle(5, 5 + i * backgroundTiles[i].Texture.Height, backgroundTiles[i].Texture.Width, backgroundTiles[i].Texture.Height).Contains(new Point(Globals.mouseState.X, Globals.mouseState.Y)))
                             {
-                                level.ChangeBackgroundTile(backgroundTiles[i]);
+                                level.ChangeBackgroundTile(backgroundTiles[i].Identifier);
                             }
                     }
                     break;
@@ -163,8 +163,8 @@ namespace StormGame
                 case ObjectList.BackgroundTiles:
                     for (int i = 0; i < backgroundTiles.Count; i++)
                     {
-                        Globals.SpriteBatch.Draw(backgroundTiles[i], new Vector2(5, 5 + i * backgroundTiles[i].Height), Color.White);
-                        DrawBoundingBox(backgroundTiles[i], new Vector2(5, 5 + i * backgroundTiles[i].Height));
+                        Globals.SpriteBatch.Draw(backgroundTiles[i].Texture, new Vector2(5, 5 + i * backgroundTiles[i].Height), Color.White);
+                        DrawBoundingBox(backgroundTiles[i].Texture, new Vector2(5, 5 + i * backgroundTiles[i].Height));
                     }
                     break;
             }

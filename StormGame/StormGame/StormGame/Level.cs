@@ -45,7 +45,7 @@ namespace StormGame
 
         private Camera _camera;
         private List<Layer> _layers;
-        private Texture2D _backgroundTile;
+        private string _backgroundTile;
 
         private Objective objective;
         //private SmokeParticleSystem smoke;
@@ -571,7 +571,7 @@ namespace StormGame
                 drawableObjects.Add(dObj);
         }
 
-        public void ChangeBackgroundTile(Texture2D tile)
+        public void ChangeBackgroundTile(string tile)
         {
             _backgroundTile = tile;
             _layers[0].ResetTiles();
@@ -635,28 +635,31 @@ namespace StormGame
 
                     //Tiles; images used for details
                     //Identifier  %  X-Coord  %  Y-Coord  %  FileName % Is Tiled
+                    //"Sprite%" + Identifier + % + Position.X + "%" + Position.Y + "%" + depth + "%" + isTiled + "%" + _tiledWidth + "%" + _tiledHeight;
                     //----------------------------------------------
-                    if (line[0] == "tile")
+                    if (line[0] == "Sprite")
                     {
-                        if (line[4] == "true")
+                        if (line[5] == "True")
                         {
-                            _backgroundTile = Globals.Content.Load<Texture2D>(line[3]);
-                            _layers[0].Sprites.Add(new Sprite(_backgroundTile, new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0, true, Width, Height));                        
+                            _backgroundTile = line[1];
+                            ChangeBackgroundTile(_backgroundTile);                      
                         }
-                        else
-                            _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0));
+                        //else
+                        //    _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0));
                     }
 
                     //Destructible Objects
                     //Identifier  %  X-Coord  %  Y-Coord
+                    //"Destructible%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + frameRate + "%" + Health;
                     //----------------------------------------------
-                    if (line[0] == "mediumbuilding")
+                    if (line[0] == "Destructible")
                     {
-                        drawableObjects.Add(new GenericDestructible(new Vector2(float.Parse(line[1]), float.Parse(line[2])), "House1", 1f, 50));
+                        drawableObjects.Add(new GenericDestructible(new Vector2(float.Parse(line[2]),float.Parse(line[3])),line[1],float.Parse(line[4]), int.Parse(line[5])));
                     }
 
                     //Impassibles
                     //Identifier  %  X-Coord  %  Y-Coord  %  Scale
+                    //"blockerobject%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + scale.Y + "%" + Invisible;
                     //----------------------------------------------
                     if (line[0] == "impassible")
                     {
@@ -672,20 +675,36 @@ namespace StormGame
                         drawableObjects.Add(startingLocation);
                     }
 
-                    //Debris
+                    //Item
                     //Identifier  %  X-Coord  %  Y-Coord
+                    //"Item%" + type + "%" + Identifier + "%" + Position.X + "%" + Position.Y;
                     //----------------------------------------------
-                    if (line[0] == "cow")
-                        drawableObjects.Add(new Cow(new Vector2(float.Parse(line[1]), float.Parse(line[2]))));
-                    if (line[0] == "largedebris")
-                        drawableObjects.Add(new LargeDebris(new Vector2(float.Parse(line[1]), float.Parse(line[2]))));                        
+                    if (line[0] == "Item")
+                    {
+                        if (line[1] == "Debris")
+                        {
+                            if (line[2] == "cow")
+                                drawableObjects.Add(new Cow(new Vector2(float.Parse(line[3]), float.Parse(line[4]))));
+                            if (line[2] == "largedebris")
+                                drawableObjects.Add(new LargeDebris(new Vector2(float.Parse(line[3]), float.Parse(line[4]))));
+                        }
+                        if (line[1] == "Powerup")
+                        {
+
+                        }
+
+                        if (line[1] == "Health")
+                        {
+
+                        }
+                    }                                          
                 }
             }
         }
 
         private void SaveLevelFile(string levelName)
         {
-            string filePath = "Levels/" + levelName + ".txt";
+            string filePath = "../../../Levels/" + levelName + ".txt";
 
             using (FileStream stream = File.Open(filePath, FileMode.Create))
             {
@@ -701,24 +720,25 @@ namespace StormGame
         {
             sw.WriteLine("popup%Welcome to Storm Game!%start");
             sw.WriteLine("popup%Use Arrow Keys to Move. \nUse Spacebar to explode.%start");
-            sw.WriteLine("dimentions%4000%2000");
             sw.WriteLine("startinglocation%600%600");
-            sw.WriteLine("tile%0%0%beach1-1");
-            sw.WriteLine("tile%2000%0%beach1-2");
         }
 
         private void WriteLevelData(StreamWriter sw)
         {
+            sw.WriteLine("dimentions%" + Width + "%" + Height);
+            sw.WriteLine(startingLocation.GetSaveData());
             foreach (DrawableObject obj in drawableObjects)
             {
                 string data="";
-                if(obj.Identifier == "mediumbuilding" ||
-                    obj.Identifier == "cow" ||
-                    obj.Identifier == "largedebris")
-                data += obj.Identifier + "%" + obj.Position.X + "%" + obj.Position.Y;
-
-                //if(obj.Identifier == "tile")
-
+                data += obj.GetSaveData();
+                sw.WriteLine(data);
+                if(data=="")
+                    throw new NotImplementedException();
+            }
+            foreach (Sprite sprite in _layers[0].Sprites)
+            {
+                string data = "";
+                data += sprite.GetSaveData();
                 sw.WriteLine(data);
             }
         }
