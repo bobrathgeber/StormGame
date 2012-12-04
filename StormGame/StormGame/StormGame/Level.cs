@@ -32,23 +32,16 @@ namespace StormGame
         private float disableControlsCoolDown;
         private float disableTime;
 
-        //private float timeSinceKeyPressed;
-        //private bool doubleKeyPressed;
-        //private Keys lastKeyPressed;
-        //private bool singleTap;
-
         public bool manualPause { get; set; }
         private bool paused;
         private Texture2D pauseOverlayTexture;
-
-        
 
         private Camera _camera;
         private List<Layer> _layers;
         private string _backgroundTile;
 
         private Objective objective;
-        //private SmokeParticleSystem smoke;
+        private ClickAnimation clickImage;
 
         //Editor Mode Variables
         //-------------------------------------
@@ -99,7 +92,9 @@ namespace StormGame
 
             GenericDestructible Walmart = new GenericDestructible(new Vector2(3360, 910), "Walmart", 1.0f, 5000);
             drawableObjects.Add(Walmart);
-            objective = new Objective(Walmart);            
+            objective = new Objective(Walmart);
+            
+            drawableObjects.Add(clickImage);
         }
 
         public void ResetManagers()
@@ -112,6 +107,7 @@ namespace StormGame
             storm = new Storm(startingLocation);
             stormFront = new StormFront(new Vector2(0, Height /2));
             drawableObjects.Add(stormFront);
+            clickImage = new ClickAnimation(storm);
             UpdateCamera();
         }
 
@@ -148,7 +144,7 @@ namespace StormGame
                     UpdateItems();
                     UpdateStormHealth();
                     CheckObjectiveCompletion();
-                    stormFront.Update();
+                    stormFront.Update();                    
                 }                
             }
 
@@ -279,7 +275,7 @@ namespace StormGame
                 layer.Draw(Globals.SpriteBatch, drawableObjects, storm);
 
             Globals.SpriteBatch.Begin();
-            
+
             if (Globals.editorMode)
             {
                 editorObjectList.Draw();
@@ -371,6 +367,15 @@ namespace StormGame
             else
             {
                 CheckDoublePress(elapsedTime);
+
+                if (Globals.mouseState.LeftButton == ButtonState.Pressed && !paused)
+                {
+                    Vector2 targetClick = new Vector2(Globals.mouseState.X, Globals.mouseState.Y) + _camera.Position;
+                    Vector2 directionVector = (targetClick - storm.Position);
+                    directionVector.Normalize();
+                    Accel += directionVector * storm.speed * elapsedTime;
+                    clickImage.Position = targetClick;                    
+                }
 
                 if (Globals.keyboardState.IsKeyDown(Keys.Right) || Globals.keyboardState.IsKeyDown(Keys.D))
                     Accel.X += storm.speed * elapsedTime;
@@ -642,7 +647,7 @@ namespace StormGame
                         if (line[5] == "True")
                         {
                             _backgroundTile = line[1];
-                            ChangeBackgroundTile(_backgroundTile);                      
+                            ChangeBackgroundTile(_backgroundTile);         
                         }
                         //else
                         //    _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0));

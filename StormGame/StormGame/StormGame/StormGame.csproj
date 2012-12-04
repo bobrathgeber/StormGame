@@ -82,6 +82,7 @@
     <Compile Include="BlockerObject.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="ClickAnimation.cs" />
     <Compile Include="Cow.cs" />
     <Compile Include="DamagePopup.cs" />
     <Compile Include="Debris.cs" />
