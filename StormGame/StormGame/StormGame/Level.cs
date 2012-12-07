@@ -41,7 +41,7 @@ namespace StormGame
         private string _backgroundTile;
 
         private Objective objective;
-        private ClickAnimation clickImage;
+        private AnimatedObject clickImage;
 
         //Editor Mode Variables
         //-------------------------------------
@@ -107,7 +107,7 @@ namespace StormGame
             storm = new Storm(startingLocation);
             stormFront = new StormFront(new Vector2(0, Height /2));
             drawableObjects.Add(stormFront);
-            clickImage = new ClickAnimation(storm);
+            clickImage = new AnimatedObject("ClickAnimation", Vector2.Zero, Vector2.One);
             UpdateCamera();
         }
 
@@ -140,7 +140,6 @@ namespace StormGame
                 {
                     MoveStorm(gameTime);
                     UpdateDestructible(gameTime);
-                    UpdateItems(gameTime);
                     UpdateItems();
                     UpdateStormHealth();
                     CheckObjectiveCompletion();
@@ -158,6 +157,15 @@ namespace StormGame
                 if (storm.withinPickupRangeOf(item) && !item.pickupBlocked)
                     storm.inventoryManager.PickupItem(item);
                 item.Update();
+
+                foreach (var destructible in drawableObjects.OfType<Destructible>())
+                {
+                    if (destructible.CheckCollision(item.BoundingBox) && item.CooldownReady)
+                    {
+                        destructible.DamageHealth(item.Damage);
+                        item.Collide();
+                    }
+                }
             }
         }
 
@@ -311,36 +319,11 @@ namespace StormGame
             Globals.SpriteBatch.End();
 
         }
-
-
-        private void UpdateItems(GameTime gameTime)
-        {
-            foreach (var item in drawableObjects.OfType<Item>())
-            {
-                item.Update();
-                
-                foreach (var destructible in drawableObjects.OfType<Destructible>())
-                {
-                    if (destructible.CheckCollision(item.BoundingBox) && item.CooldownReady)
-                    {
-                        destructible.DamageHealth(item.Damage);
-                        item.Collide();
-                    }
-                }
-            }
-        }
-
+              
         public void ToggleManualPause()
         {
             manualPause = !manualPause;
         }
-
-        //public void SpawnDebris(Vector2 origin)
-        //{
-        //    Debris newdebris = new LargeDebris();
-        //    drawableObjects.Add(newdebris);
-        //    newdebris.Eject(origin);
-        //}
 
         private void ManageInput(GameTime gameTime)
         {
@@ -374,7 +357,12 @@ namespace StormGame
                     Vector2 directionVector = (targetClick - storm.Position);
                     directionVector.Normalize();
                     Accel += directionVector * storm.speed * elapsedTime;
-                    clickImage.Position = targetClick;                    
+                    clickImage.Position = targetClick;
+                    clickImage.ChangeAnimation("ClickAnimation", true);
+                }
+                else if (Globals.mouseState.LeftButton == ButtonState.Released && Globals.oldMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    clickImage.ChangeAnimation("Idle", false);
                 }
 
                 if (Globals.keyboardState.IsKeyDown(Keys.Right) || Globals.keyboardState.IsKeyDown(Keys.D))
@@ -485,9 +473,7 @@ namespace StormGame
         private void ToggleEditorMode()
         {
             Globals.editorMode = !Globals.editorMode;
-        }
-
-        
+        }        
 
         private void MoveStorm(GameTime gameTime)
         {
@@ -495,8 +481,7 @@ namespace StormGame
             CheckImpassableCollisions(drawableObjects);
             UpdateCamera();
             storm.Velocity *= STOPPINGFORCE;
-            storm.ApplyVelocity();        
-
+            storm.ApplyVelocity(); 
         }
 
         private void CheckImpassableCollisions(List<DrawableObject> listOfObjects)

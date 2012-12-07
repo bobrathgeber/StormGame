@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimatedObject.cs" />
     <Compile Include="Animation.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -82,10 +83,8 @@
     <Compile Include="BlockerObject.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Camera.cs" />
-    <Compile Include="ClickAnimation.cs" />
     <Compile Include="Cow.cs" />
     <Compile Include="DamagePopup.cs" />
-    <Compile Include="Debris.cs" />
     <Compile Include="Destructible.cs" />
     <Compile Include="DrawableObject.cs" />
     <Compile Include="DrawableObjectCollection.cs" />

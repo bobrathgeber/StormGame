@@ -23,6 +23,8 @@ namespace StormGame
 
         public void LoadContent(Vector2 pos, int health)
         {
+            SetDrawDepthRange(100, 199);
+            SetDepth(100);
             Collidable = true;
             isAlive = true;
 

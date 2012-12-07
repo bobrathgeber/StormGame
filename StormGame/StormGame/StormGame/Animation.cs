@@ -82,5 +82,13 @@ namespace StormGame
             this.frameTime = frameTime;
             this.isLooping = isLooping;
         }
+
+        public bool ContainsAnimation(string animation)
+        {
+            if (Map[animation+"-0"] != null)
+                return true;
+            else
+                return false;
+        }
     }
 }

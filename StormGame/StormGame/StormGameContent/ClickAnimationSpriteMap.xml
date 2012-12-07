@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
 <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
-<Item><Key>ClickAnimation-0</Key><Value>0 0 30 31</Value></Item>
+  <Item>
+    <Key>Idle-0</Key>
+    <Value>93 32 30 31</Value>
+  </Item>
+  <Item>
+    <Key>ClickAnimation-0</Key>
+    <Value>0 0 30 31</Value>
+  </Item>
 <Item><Key>ClickAnimation-1</Key><Value>31 0 30 31</Value></Item>
 <Item><Key>ClickAnimation-2</Key><Value>0 32 30 31</Value></Item>
 <Item><Key>ClickAnimation-3</Key><Value>31 32 30 31</Value></Item>

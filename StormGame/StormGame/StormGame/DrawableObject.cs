@@ -9,7 +9,7 @@ namespace StormGame
     {
         Destructible,
         Item,
-        Sprite
+        AnimatedObject
     }
 
     public abstract class DrawableObject
@@ -38,10 +38,12 @@ namespace StormGame
         protected Animation animation;
         public Rectangle SrcRectangle { get { if (animation != null) return animation.GetFrameRectangle(animationPlayer.currentFrame); else return Texture.Bounds; } }
         public float frameRate = 1.0f;
-        public int numOfFrames = 1;
         public bool Invisible = false;
         public Color _color = Color.White;
         public Vector2 scale = new Vector2(1);
+        private int _depth;
+        protected int MaxDrawDepth;
+        protected int MinDrawDepth;
 
         public Rectangle BoundingBox { get { return new Rectangle((int)TopLeftPoint.X, (int)TopLeftPoint.Y, (int)Width, (int)Height); } }
         public Vector2 Origin { get { return new Vector2(Width / 2, Height / 2); } }
@@ -51,8 +53,7 @@ namespace StormGame
         public Vector2 TopRightPoint { get { return new Vector2(Position.X + Origin.X, Position.Y - Origin.Y); } }
         public Vector2 BottomLeftPoint { get { return new Vector2(Position.X - Origin.X, Position.Y + Origin.Y); } }
         public Vector2 BottomRightPoint { get { return new Vector2(Position.X + Origin.X, Position.Y + Origin.Y); } }     
-                
-
+        
         public virtual void Initialize()
         {
         }
@@ -63,7 +64,7 @@ namespace StormGame
 
         public virtual string GetSaveData()
         {
-            return "";
+            return "NO SAVE FUNCTION AVAILABLE FOR" + Identifier;
         }
 
         public bool CheckCollision(Vector2 v)
@@ -112,6 +113,30 @@ namespace StormGame
             Globals.SpriteBatch.Draw(blank, BottomLeftPoint, null, Color.White, MathHelper.ToRadians(270), Vector2.Zero, new Vector2(SrcRectangle.Height, 3), SpriteEffects.None, 0);
         }
 
-        
+        public void ChangeAnimation(string animationName, bool isLooping = true)
+        {
+            if (animation.ContainsAnimation(animationName))
+                animationPlayer.PlayAnimation(animation, animationName, 0.1f, isLooping);
+        }
+
+        public void SetDrawDepthRange(int min, int max)
+        {
+            MaxDrawDepth = max;
+            MinDrawDepth = min;
+        }
+
+        //Depth Ranges for the following types:
+        //------------------------------------
+        //0-99:      Tiles, Dodads, Background. Lowest Layer
+        //100-199    Destructible Objects rooted to the ground.
+        //200-299    Items, Debris, Power-ups.
+        //300-320    Storm
+        //321-350    Storm Fronts
+        //351+       UI
+        //------------------------------------
+        public void SetDepth(int depth)
+        {
+            _depth = (int)MathHelper.Clamp((float)depth, (float)MinDrawDepth, (float)MaxDrawDepth);
+        }
     }
 }

@@ -63,6 +63,8 @@ namespace StormGame
 
         public override void LoadContent()
         {
+            SetDrawDepthRange(200, 299);
+            SetDepth(100);
             _debugLine = new Texture2D(Globals.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             hitSounds = new List<SoundEffect>();
             hitSounds.Add(Globals.Content.Load<SoundEffect>("Sounds/debrisHit1"));
