@@ -130,7 +130,6 @@
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
     <Content Include="Levels\EMPTYLEVEL.txt" />
-    <Content Include="Levels\test.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StormGameContent\StormGameContent.contentproj">

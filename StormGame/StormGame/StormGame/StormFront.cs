@@ -13,11 +13,12 @@ namespace StormGame
 
         public StormFront(Vector2 pos)
         {
+            Identifier = "Storm Front";
             Texture = Globals.Content.Load<Texture2D>("StormFront");
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("StormFrontSpriteMap");
             animation = new Animation(Texture, spriteMap);
-            animationPlayer.PlayAnimation(animation, "Idle", 0.8f, true);
-
+            animationPlayer.PlayAnimation(animation, "Idle", 0.1f, true);
+            _color = new Color(255, 255, 255, 50);
             Velocity = new Vector2(1f, 0);
             _startingPosition = Position = pos;
         }

@@ -39,10 +39,10 @@ namespace StormGame
             drawableObjects.Add(2, new Cow(new Vector2(0)));
             drawableObjects.Add(3, new LargeDebris());
             drawableObjects.Add(4, new GenericDestructible(new Vector2(0), "House1", 1.0f, 15));
-            drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "Walmart", 1.0f, 15));
+            //drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "Walmart", 1.0f, 15));
             //drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
-            drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
-            drawableObjects.Add(7, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
+            drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
+            drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
 
             backgroundTiles.Add(0, new Sprite("Tiles/DesertTile256",Vector2.Zero, 0, false));
             backgroundTiles.Add(1, new Sprite("Tiles/GrassTile256",Vector2.Zero, 0, false));
@@ -56,12 +56,53 @@ namespace StormGame
 
         public void Update(Level level)
         {
+            DrawableObjectCollection levelObjects = level.GetDrawableObjectList();
             UpdateObjectList(); 
             DragOutNewObject(level);
             for (int i = 0; i < drawableObjects.Count; i++)
                 drawableObjects[i].Update();
-
+            UpdateDepth(levelObjects);
+            MoveSelectedWithArrows(levelObjects);
             SwitchObjectList();
+        }
+
+        private void MoveSelectedWithArrows(DrawableObjectCollection levelObjects)
+        {            
+            for (int i = 0; i < levelObjects.Count; i++)
+            {
+                if (levelObjects[i].Selected)
+                {
+                    if (Globals.keyboardState.IsKeyDown(Keys.Left) && Globals.oldKeyboardState.IsKeyUp(Keys.Left))
+                        levelObjects[i].Position.X--;
+                    if (Globals.keyboardState.IsKeyDown(Keys.Right) && Globals.oldKeyboardState.IsKeyUp(Keys.Right))
+                        levelObjects[i].Position.X++;
+                    if (Globals.keyboardState.IsKeyDown(Keys.Up) && Globals.oldKeyboardState.IsKeyUp(Keys.Up))
+                        levelObjects[i].Position.Y--;
+                    if (Globals.keyboardState.IsKeyDown(Keys.Down) && Globals.oldKeyboardState.IsKeyUp(Keys.Down))
+                        levelObjects[i].Position.Y++;
+                }
+            }
+        }
+
+        private void UpdateDepth(DrawableObjectCollection levelObjects)
+        {
+            if (Globals.keyboardState.IsKeyDown(Keys.OemOpenBrackets) && Globals.oldKeyboardState.IsKeyUp(Keys.OemOpenBrackets))
+            {
+                for (int i = 0; i < levelObjects.Count; i++)
+                {
+                    if (levelObjects[i].Selected)
+                        levelObjects[i].SetDepth(levelObjects[i].Depth - 1);
+                }
+            }
+            if (Globals.keyboardState.IsKeyDown(Keys.OemCloseBrackets) && Globals.oldKeyboardState.IsKeyUp(Keys.OemCloseBrackets))
+            {
+                for (int i = 0; i < levelObjects.Count; i++)
+                {
+                    if (levelObjects[i].Selected)
+                        levelObjects[i].SetDepth(levelObjects[i].Depth + 1);
+                }
+            }
+
         }
 
         private void SwitchObjectList()

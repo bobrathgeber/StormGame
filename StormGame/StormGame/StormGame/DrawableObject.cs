@@ -41,7 +41,7 @@ namespace StormGame
         public bool Invisible = false;
         public Color _color = Color.White;
         public Vector2 scale = new Vector2(1);
-        private int _depth;
+        public int Depth { get; private set; }
         protected int MaxDrawDepth;
         protected int MinDrawDepth;
 
@@ -88,9 +88,9 @@ namespace StormGame
         public virtual void Draw()
         {
             if (animation != null && (!Invisible || Globals.editorMode))
-                animationPlayer.Draw(Globals.GameTime, Globals.SpriteBatch, Position, SpriteEffects.None, Rotation, scale, Origin);
+                animationPlayer.Draw(Globals.GameTime, Globals.SpriteBatch, Position, SpriteEffects.None, Rotation, scale, Origin, _color);
             else if (Texture != null && (!Invisible || Globals.editorMode))
-                Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
+                Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, (Depth/1000));
 
             if (this.Selected && Globals.editorMode)
                 DrawBoundingBox();          
@@ -136,7 +136,7 @@ namespace StormGame
         //------------------------------------
         public void SetDepth(int depth)
         {
-            _depth = (int)MathHelper.Clamp((float)depth, (float)MinDrawDepth, (float)MaxDrawDepth);
+            Depth = (int)MathHelper.Clamp((float)depth, (float)MinDrawDepth, (float)MaxDrawDepth);
         }
     }
 }

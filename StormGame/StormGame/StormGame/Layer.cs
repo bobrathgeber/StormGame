@@ -22,8 +22,9 @@
             Sprites = new List<DrawableObject>();
         }
 
-        public void Draw(SpriteBatch spriteBatch, List<DrawableObject> drawableObjects, Storm storm)
+        public void Draw(SpriteBatch spriteBatch, DrawableObjectCollection drawableObjects, Storm storm)
         {
+            drawableObjects.SortList();
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _camera.GetViewMatrix(Parallax));
 
             foreach (DrawableObject sprite in Sprites)

@@ -11,9 +11,6 @@ Content\StormLines2.xnb
 Content\StormLines3.xnb
 Content\StormLines4.xnb
 Content\StormLines5.xnb
-Content\wheat.xnb
-Content\Tiles\DesertTile256.xnb
-Content\Tiles\GrassTile256.xnb
 Content\MenuFont.xnb
 Content\DamagePopupFont.xnb
 Content\DefaultFont.xnb
@@ -22,6 +19,8 @@ Content\Sounds\debrisHit1.xnb
 Content\Sounds\debrisHit2.xnb
 Content\Sounds\debrisHit3.xnb
 Content\Sounds\debrisHit4.xnb
+Content\Tiles\DesertTile256.xnb
+Content\Tiles\GrassTile256.xnb
 Content\Cow.xnb
 Content\House1.xnb
 Content\LeftFence.xnb
@@ -29,15 +28,16 @@ Content\Powerup.xnb
 Content\RightFence.xnb
 Content\WoodDebris.xnb
 Content\Walmart.xnb
-Content\StormFront.xnb
-Content\CowSpriteMap.xnb
 Content\LeftFenceSpriteMap.xnb
 Content\PowerupSpriteMap.xnb
 Content\RightFenceSpriteMap.xnb
 Content\WalmartSpriteMap.xnb
 Content\WoodDebrisSpriteMap.xnb
 Content\House1SpriteMap.xnb
+Content\CowSpriteMap.xnb
+Content\wheat.xnb
 Content\WheatSpriteMap.xnb
+Content\StormFront.xnb
 Content\StormFrontSpriteMap.xnb
 Content\ClickAnimation.xnb
 Content\ClickAnimationSpriteMap.xnb

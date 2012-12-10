@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StormGame
 {
-    class DrawableObjectCollection: List<DrawableObject>
+    public class DrawableObjectCollection: List<DrawableObject>
     {
         List<DrawableObject> removeQueue = new List<DrawableObject>();
         public List<T> CopyFilter<T>() where T : DrawableObject
@@ -22,19 +22,14 @@ namespace StormGame
             }
         }
 
-        public void QueueRemoveObject(DrawableObject d)
+        public void SortList()
         {
-            removeQueue.Add(d);
-        }
-
-        public void QueueAddObject()
-        {
-
-        }
-
-        public void ResolveQueue()
-        {
-            
+            this.Sort(delegate(DrawableObject a, DrawableObject b)
+            {
+                int xdiff = a.Depth.CompareTo(b.Depth);
+                if (xdiff != 0) return xdiff;
+                else return a.Depth.CompareTo(b.Depth);
+            });
         }
     }
 }

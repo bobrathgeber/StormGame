@@ -51,7 +51,7 @@ namespace StormGame
         private Vector2 oldAbsoluteMousePosition;
         private string levelFileName;
         private List<string> dataObjects;
-        private List<DrawableObject> selectedObjects;
+        public List<DrawableObject> selectedObjects;
         private bool savingLevel;
         private string levelName="";
         private EditorObjectList editorObjectList;
@@ -125,7 +125,7 @@ namespace StormGame
                     levelName = ModifyString(levelName);
                 
                 if (Globals.mouseState.LeftButton == ButtonState.Released && Globals.oldMouseState.LeftButton == ButtonState.Pressed)
-                    SelectObject();
+                    CheckNewObjectsToSelect();
                 else if (Globals.mouseState.LeftButton == ButtonState.Pressed) 
                     MoveSelectedObjects();
             }
@@ -148,6 +148,11 @@ namespace StormGame
             }
 
             drawableObjects.RemoveFlaggedObjects();
+        }
+
+        public DrawableObjectCollection GetDrawableObjectList()
+        {
+            return drawableObjects;
         }
 
         private void UpdateItems()
@@ -194,7 +199,7 @@ namespace StormGame
 
         private void UpdateStormHealth()
         {
-            if(StormInFront())
+            if(IsStormInStormFront())
                 storm.stormHealth.ModifyHealth(-1);
             else
                 storm.stormHealth.ModifyHealth(-3);
@@ -207,19 +212,11 @@ namespace StormGame
             }
         }
 
-        private bool StormInFront()
+        private bool IsStormInStormFront()
         {
             if (stormFront.BoundingBox.Contains(new Point((int)storm.Position.X, (int)storm.Position.Y)))
                 return true;
             return false;
-        }
-
-        private void SelectObject()
-        {
-            bool objectWasSelected = false;
-            int oldSelectionAmount = selectedObjects.Count;
-            foreach (DrawableObject d in drawableObjects)
-                objectWasSelected = SelectObject(d);
         }
 
         private string ModifyString(string textString)
@@ -241,25 +238,27 @@ namespace StormGame
                 }
             }
             return textString;
-        } 
+        }
 
-        private bool SelectObject(DrawableObject gameObject)
+        private void CheckNewObjectsToSelect()
         {
-            if (gameObject.BoundingBox.Contains(new Point((int)absoluteMousePosition.X, (int)oldAbsoluteMousePosition.Y)))
+            foreach (DrawableObject d in drawableObjects)
             {
-                if (Globals.keyboardState.IsKeyDown(Keys.LeftAlt))
+                if (d.BoundingBox.Contains(new Point((int)absoluteMousePosition.X, (int)oldAbsoluteMousePosition.Y)))
                 {
-                    DeselectObject(gameObject);
-                    return false;
+                    if (Globals.keyboardState.IsKeyDown(Keys.LeftAlt))
+                    {
+                        DeselectObject(d);
+                    }
+                    else if (!d.Selected)
+                    {
+                        selectedObjects.Add(d);
+                        d.Selected = !d.Selected;
+                        break;
+                    }
                 }
-                else if (!gameObject.Selected)
-                {
-                    selectedObjects.Add(gameObject);
-                    gameObject.Selected = !gameObject.Selected;
-                    return true;
-                }                
             }
-            return false;
+
         }
 
         private void DeselectObject(DrawableObject gameObject)
@@ -287,12 +286,13 @@ namespace StormGame
             if (Globals.editorMode)
             {
                 editorObjectList.Draw();
-                Globals.SpriteBatch.DrawString(Globals.Font1, "Selected Object Position", new Vector2(5, Globals.SCREEN_HEIGHT-60), Color.White);
+                Globals.SpriteBatch.DrawString(Globals.Font1, "Selected Object Position", new Vector2(5, Globals.SCREEN_HEIGHT-75), Color.White);
                 if (selectedObjects.Count > 0)
                 {
+                    Globals.SpriteBatch.DrawString(Globals.Font1, selectedObjects[0].Identifier, new Vector2(5, Globals.SCREEN_HEIGHT - 60), Color.White);
                     Globals.SpriteBatch.DrawString(Globals.Font1, "  X: " + selectedObjects[0].Position.X.ToString() + "   " + "Y: " + selectedObjects[0].Position.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 45), Color.White);
                     Globals.SpriteBatch.DrawString(Globals.Font1, "  Origin X: " + selectedObjects[0].Origin.X.ToString() + "   " + "Y: " + selectedObjects[0].Origin.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 30), Color.White);
-                    Globals.SpriteBatch.DrawString(Globals.Font1, "  Scale X: " + selectedObjects[0].scale.X.ToString() + "   " + "Y: " + selectedObjects[0].scale.Y.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 15), Color.White);
+                    Globals.SpriteBatch.DrawString(Globals.Font1, "  Scale X: " + selectedObjects[0].scale.X.ToString() + "   " + "Y: " + selectedObjects[0].scale.Y.ToString() + "          Depth: " + selectedObjects[0].Depth.ToString(), new Vector2(5, Globals.SCREEN_HEIGHT - 15), Color.White);
                 
                 }
                 Globals.SpriteBatch.DrawString(Globals.Font1, "Mouse Position", new Vector2(5, Globals.SCREEN_HEIGHT), Color.White);
@@ -351,7 +351,7 @@ namespace StormGame
             {
                 CheckDoublePress(elapsedTime);
 
-                if (Globals.mouseState.LeftButton == ButtonState.Pressed && !paused)
+                if (Globals.mouseState.LeftButton == ButtonState.Pressed && !paused && !Globals.editorMode)
                 {
                     Vector2 targetClick = new Vector2(Globals.mouseState.X, Globals.mouseState.Y) + _camera.Position;
                     Vector2 directionVector = (targetClick - storm.Position);
@@ -742,7 +742,7 @@ namespace StormGame
         public void DeselectAll()
         {
             foreach (DrawableObject d in drawableObjects)
-                d.Selected = false;
+                if(d.Selected)DeselectObject(d);
         }
     }
 }

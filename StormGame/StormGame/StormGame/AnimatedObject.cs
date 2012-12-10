@@ -13,8 +13,6 @@ namespace StormGame
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(Identifier + "SpriteMap");
             animation = new Animation(Texture, spriteMap);
             animationPlayer.PlayAnimation(animation, "Idle", 0.1f, true);
-        }
-
-        
+        }        
     }
 }

@@ -75,7 +75,7 @@ namespace StormGame
         /// <summary>
         /// Advances the time position and draws the current frame of the animation.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects, float rotation, Vector2 scale, Vector2 origin)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects, float rotation, Vector2 scale, Vector2 origin, Color color)
         {
             if (Animation == null)
                 throw new NotSupportedException("No animation is currently playing.");
@@ -114,7 +114,7 @@ namespace StormGame
 
             // Draw the current frame.
 
-            spriteBatch.Draw(animation.AnimationSheet, position, source, Color.White, rotation, origin, scale, spriteEffects, 0);
+            spriteBatch.Draw(animation.AnimationSheet, position, source, color, rotation, origin, scale, spriteEffects, 0);
                 
                 //Animation., position, source, Color.White, 0.0f, Origin, 1.0f, spriteEffects, 0.0f);
         }
