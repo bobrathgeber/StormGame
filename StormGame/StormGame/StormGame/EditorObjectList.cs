@@ -43,6 +43,8 @@ namespace StormGame
             //drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
             drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
             drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
+            drawableObjects.Add(7, new AnimatedObject("RiverTileStraight", new Vector2(0), Vector2.One));
+            drawableObjects.Add(8, new AnimatedObject("RiverTileCorner", new Vector2(0), Vector2.One));
 
             backgroundTiles.Add(0, new Sprite("Tiles/DesertTile256",Vector2.Zero, 0, false));
             backgroundTiles.Add(1, new Sprite("Tiles/GrassTile256",Vector2.Zero, 0, false));
@@ -62,11 +64,11 @@ namespace StormGame
             for (int i = 0; i < drawableObjects.Count; i++)
                 drawableObjects[i].Update();
             UpdateDepth(levelObjects);
-            MoveSelectedWithArrows(levelObjects);
+            ModifySelectedWithInput(levelObjects);
             SwitchObjectList();
         }
 
-        private void MoveSelectedWithArrows(DrawableObjectCollection levelObjects)
+        private void ModifySelectedWithInput(DrawableObjectCollection levelObjects)
         {            
             for (int i = 0; i < levelObjects.Count; i++)
             {
@@ -80,6 +82,8 @@ namespace StormGame
                         levelObjects[i].Position.Y--;
                     if (Globals.keyboardState.IsKeyDown(Keys.Down) && Globals.oldKeyboardState.IsKeyUp(Keys.Down))
                         levelObjects[i].Position.Y++;
+                    if (Globals.keyboardState.IsKeyDown(Keys.R) && Globals.oldKeyboardState.IsKeyUp(Keys.R))
+                        levelObjects[i].Rotation += 0.785398163f;
                 }
             }
         }

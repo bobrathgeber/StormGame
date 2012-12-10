@@ -1,0 +1,37 @@
+popup%Welcome to Storm Game!%start
+popup%Use Arrow Keys to Move. 
+Use Spacebar to explode.%start
+startinglocation%600%600
+dimentions%4000%2000
+startinglocation%1153%568
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+blockerobject%4000%0%50%2000%False
+blockerobject%-50%2000%4100%50%False
+NO SAVE FUNCTION AVAILABLE FORRiverTileCorner
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+blockerobject%-50%0%50%2000%False
+NO SAVE FUNCTION AVAILABLE FORRiverTileCorner
+Stormfront%0%1000
+blockerobject%-50%-50%4100%50%False
+NO SAVE FUNCTION AVAILABLE FORClickAnimation
+startinglocation%1139%535
+NO SAVE FUNCTION AVAILABLE FORRiverTileStraight
+Destructible%RightFence%473%437%1%15
+Destructible%RightFence%558%436%1%15
+Destructible%Wheat%519%400%1%15
+Destructible%RightFence%392%437%1%15
+Destructible%Wheat%481%399%1%15
+Destructible%House1%491%342%1%15
+Destructible%Wheat%599%399%1%15
+Destructible%RightFence%645%435%1%15
+Destructible%Walmart%3360%910%1%5000
+Destructible%Wheat%559%400%1%15
+Destructible%Wheat%638%397%1%15
+Destructible%Walmart%3360%910%1%5000
+Item%Debris%Cow%569.6301%500.3354
+Item%Debris%Cow%656.6301%502.3354
+Item%Debris%Cow%612.6301%497.3354
+Sprite%Tiles/DesertTile256%128%128%0%True%4000%2000
