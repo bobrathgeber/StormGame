@@ -107,7 +107,7 @@ namespace StormGame
             storm = new Storm(startingLocation);
             stormFront = new StormFront(new Vector2(0, Height /2));
             drawableObjects.Add(stormFront);
-            clickImage = new AnimatedObject("ClickAnimation", Vector2.Zero, Vector2.One);
+            clickImage = new AnimatedObject("ClickAnimation", Vector2.Zero, Vector2.One, 0, 0.1f);
             UpdateCamera();
         }
 
@@ -654,6 +654,15 @@ namespace StormGame
                     if (line[0] == "impassible")
                     {
                         drawableObjects.Add(new BlockerObject(line[6], new Vector2(float.Parse(line[1]), float.Parse(line[2])), new Vector2(float.Parse(line[3]), float.Parse(line[4])), string.Equals(line[5], "true")));
+                    }
+
+                    //AnimatedObjects
+                    //Identifier  %  X-Coord  %  Y-Coord  %  Scale % Framerate
+                    //"AnimatedObject%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + Rotation + "%" + frameRate;
+                    //----------------------------------------------
+                    if (line[0] == "AnimatedObject")
+                    {
+                        drawableObjects.Add(new AnimatedObject(line[1], new Vector2(float.Parse(line[2]), float.Parse(line[3])), new Vector2(float.Parse(line[4]), float.Parse(line[4])), float.Parse(line[5]), float.Parse(line[6])));
                     }
 
                     //Storm
