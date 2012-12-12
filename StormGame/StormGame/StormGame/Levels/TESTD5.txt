@@ -1,0 +1,20 @@
+popup%Welcome to Storm Game!%start
+popup%Use Arrow Keys to Move. 
+Use Spacebar to explode.%start
+dimentions%4000%2000
+startinglocation%600%600
+blockerobject%4000%0%50%2000%False
+blockerobject%-50%-50%4100%50%False
+blockerobject%-50%2000%4100%50%False
+blockerobject%-50%0%50%2000%False
+startinglocation%600%600
+AnimatedObject%RiverTileStraight%196%507%2.1%1.570796%1%0%True
+startinglocation%600%600
+AnimatedObject%ClickAnimation%531%641.8636%1%0%1%0%True
+Stormfront%0%1000
+AnimatedObject%ClickAnimation%564%560.0256%1%0%1%0%False
+Sprite%Tree%528%503%1%1%False%0%True%0%0
+Destructible%House1%349%553%1%15
+Destructible%Walmart%3360%910%1%5000
+Destructible%Walmart%3360%910%1%5000
+Sprite%Tiles/GrassTile256%128%128%1%1%True%0%False%4000%2000

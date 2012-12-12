@@ -12,7 +12,7 @@ namespace StormGame
             //Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(texture);
             //animation = new Animation(Texture, spriteMap);
             //animationPlayer.PlayAnimation(animation, "Walk", 0.3f, true);
-
+            SetDrawDepthRange(100, 105);
             Position = pos;
             _color = new Color(255, 255, 255, 70);
         }

@@ -28,11 +28,16 @@ namespace StormGame
         public Storm(StartingLocation startingPosition)
         {
             //Texture = Globals.Content.Load<Texture2D>("StormLines1");
-            firstLayer = new StormLayer("StormLines1", startingPosition.Position);
+            firstLayer = new StormLayer("StormLines1", startingPosition.Position);            
             secondLayer = new StormLayer("StormLines2", startingPosition.Position);
             thirdLayer = new StormLayer("StormLines3", startingPosition.Position);
             fourthLayer = new StormLayer("StormLines4", startingPosition.Position);
             fifthLayer = new StormLayer("StormLines5", startingPosition.Position);
+            firstLayer.SetDepth(100);
+            secondLayer.SetDepth(101);
+            thirdLayer.SetDepth(102);
+            fourthLayer.SetDepth(103);
+            fifthLayer.SetDepth(104);
             inventoryManager = new InventoryManager(this);
             stormHealth = new Healthbar(10000, new Vector2(20));   
             Position = startingPosition.Position;

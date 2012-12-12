@@ -18,7 +18,7 @@ namespace StormGame
     
         public override string  GetSaveData()
         {
-            return "Destructible%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + frameRate + "%" + Health;
+            return "Destructible%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + frameRate + "%" + Health + "%" + scale.X +"%" + Rotation;
         }
 
         public void LoadContent(Vector2 pos, int health)

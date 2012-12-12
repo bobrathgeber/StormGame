@@ -21,6 +21,7 @@ namespace StormGame
             _color = new Color(255, 255, 255, 50);
             Velocity = new Vector2(1f, 0);
             _startingPosition = Position = pos;
+            Collidable = false;
         }
 
         public override string GetSaveData()

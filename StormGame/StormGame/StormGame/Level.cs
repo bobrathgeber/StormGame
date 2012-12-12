@@ -107,7 +107,8 @@ namespace StormGame
             storm = new Storm(startingLocation);
             stormFront = new StormFront(new Vector2(0, Height /2));
             drawableObjects.Add(stormFront);
-            clickImage = new AnimatedObject("ClickAnimation", Vector2.Zero, Vector2.One, 0, 0.1f);
+            clickImage = new AnimatedObject("ClickAnimation", Vector2.Zero, Vector2.One, 0, 0.1f, 500);
+            clickImage.Collidable = false;
             UpdateCamera();
         }
 
@@ -200,7 +201,7 @@ namespace StormGame
         private void UpdateStormHealth()
         {
             if(IsStormInStormFront())
-                storm.stormHealth.ModifyHealth(-1);
+                storm.stormHealth.ModifyHealth(0);
             else
                 storm.stormHealth.ModifyHealth(-3);
             if (storm.stormHealth.CurrentHealth <= 0)
@@ -349,9 +350,7 @@ namespace StormGame
             }
             else
             {
-                CheckDoublePress(elapsedTime);
-
-                if (Globals.mouseState.LeftButton == ButtonState.Pressed && !paused && !Globals.editorMode)
+                if (Globals.mouseState.RightButton == ButtonState.Pressed && !paused && !Globals.editorMode)
                 {
                     Vector2 targetClick = new Vector2(Globals.mouseState.X, Globals.mouseState.Y) + _camera.Position;
                     Vector2 directionVector = (targetClick - storm.Position);
@@ -419,57 +418,6 @@ namespace StormGame
                     drawableObjects.Remove(drawableObjects[i]);
         }
 
-        private void CheckDoublePress(float elapsedTime)
-        {
-            //if (Globals.controllerState.IsDoubleTap(Keys.Down))
-            //    storm.speed = 25;
-            //else
-            //    storm.speed = 15;
-
-            //Executed Single Tap
-            // IF FIRST KEYDOWN
-            // save active key
-            // start timer
-            // save as 'last key pressed'
-
-            // If keyup
-            // reset first key down flag
-
-            // If first keydown matches last key pressed
-            // if less than double tap thresh
-            // run
-
-
-
-            //if (Globals.oldKeyboardState.IsKeyUp(Keys.Right) && Globals.keyboardState.IsKeyDown(Keys.Right))
-            //{
-            //    if (!singleTap)
-            //    {
-            //        singleTap = true;
-            //        timeSinceKeyPressed = 0;
-            //        lastKeyPressed = Keys.Right;
-            //    }
-            //    else if(timeSinceKeyPressed < 0.2f) 
-            //    {
-            //        doubleKeyPressed = true;
-            //        storm.speed = 25;
-            //    }
-            //    else
-            //    {
-            //        singleTap = false;
-            //        doubleKeyPressed = false;
-            //        storm.speed = 5;
-            //        timeSinceKeyPressed += elapsedTime;
-            //    }
-            //}                
-            //else if (Globals.keyboardState.IsKeyUp(lastKeyPressed))
-            //{
-            //    timeSinceKeyPressed += elapsedTime;
-            //    storm.speed = 5;
-            //}
-            
-        }
-
         private void ToggleEditorMode()
         {
             Globals.editorMode = !Globals.editorMode;
@@ -478,17 +426,17 @@ namespace StormGame
         private void MoveStorm(GameTime gameTime)
         {
             storm.Update(gameTime);            
-            CheckImpassableCollisions(drawableObjects);
+            CheckImpassableCollisions();
             UpdateCamera();
             storm.Velocity *= STOPPINGFORCE;
             storm.ApplyVelocity(); 
         }
 
-        private void CheckImpassableCollisions(List<DrawableObject> listOfObjects)
+        private void CheckImpassableCollisions()
         {
-            foreach (DrawableObject obj in listOfObjects)
+            foreach (DrawableObject obj in drawableObjects)
             {
-                if (obj.CheckCollision(storm.Position) && obj.isAlive)
+                if (obj.CheckCollision(storm.Position))
                 {
                     var stormCenter = storm.Position;
                     var box = obj.BoundingBox;
@@ -516,7 +464,7 @@ namespace StormGame
 
                     while (obj.CheckCollision(storm.Position))
                     {
-                        storm.Velocity *= 1.1f;
+                        storm.Velocity *= 1.001f;
                         storm.ApplyVelocity();
                     }
 
@@ -565,7 +513,7 @@ namespace StormGame
         {
             _backgroundTile = tile;
             _layers[0].ResetTiles();
-            _layers[0].Sprites.Add(new Sprite(_backgroundTile, Vector2.Zero, 0, true, Width, Height));
+            _layers[0].Sprites.Add(new Sprite(_backgroundTile, Vector2.Zero, 0, Vector2.One, true, 0, false, Width, Height));
         }
 
         private void UpdateCamera()
@@ -625,17 +573,17 @@ namespace StormGame
 
                     //Tiles; images used for details
                     //Identifier  %  X-Coord  %  Y-Coord  %  FileName % Is Tiled
-                    //"Sprite%" + Identifier + % + Position.X + "%" + Position.Y + "%" + depth + "%" + isTiled + "%" + _tiledWidth + "%" + _tiledHeight;
+                    //"Sprite%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + Depth + "%" + scale.X + "%" + isTiled + "%" + Rotation + "%" + Collidable + "%" + _tiledWidth + "%" + _tiledHeight;
                     //----------------------------------------------
                     if (line[0] == "Sprite")
                     {
-                        if (line[5] == "True")
+                        if (line[6] == "True")
                         {
                             _backgroundTile = line[1];
                             ChangeBackgroundTile(_backgroundTile);         
                         }
-                        //else
-                        //    _layers[0].Sprites.Add(new Sprite(Globals.Content.Load<Texture2D>(line[3]), new Vector2(float.Parse(line[1]), float.Parse(line[2])), 0));
+                        else
+                            drawableObjects.Add(new Sprite(line[1], new Vector2(float.Parse(line[2]), float.Parse(line[3])), int.Parse(line[4]), new Vector2(float.Parse(line[5]),float.Parse(line[5])), false, float.Parse(line[7]), bool.Parse(line[8]), int.Parse(line[9]), int.Parse(line[10])));
                     }
 
                     //Destructible Objects
@@ -658,11 +606,11 @@ namespace StormGame
 
                     //AnimatedObjects
                     //Identifier  %  X-Coord  %  Y-Coord  %  Scale % Framerate
-                    //"AnimatedObject%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + Rotation + "%" + frameRate;
+                    //"AnimatedObject%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + Rotation + "%" + frameRate + Depth + collidable;
                     //----------------------------------------------
                     if (line[0] == "AnimatedObject")
                     {
-                        drawableObjects.Add(new AnimatedObject(line[1], new Vector2(float.Parse(line[2]), float.Parse(line[3])), new Vector2(float.Parse(line[4]), float.Parse(line[4])), float.Parse(line[5]), float.Parse(line[6])));
+                        drawableObjects.Add(new AnimatedObject(line[1], new Vector2(float.Parse(line[2]), float.Parse(line[3])), new Vector2(float.Parse(line[4]), float.Parse(line[4])), float.Parse(line[5]), float.Parse(line[6]), float.Parse(line[7]), bool.Parse(line[8])));
                     }
 
                     //Storm
@@ -719,7 +667,6 @@ namespace StormGame
         {
             sw.WriteLine("popup%Welcome to Storm Game!%start");
             sw.WriteLine("popup%Use Arrow Keys to Move. \nUse Spacebar to explode.%start");
-            sw.WriteLine("startinglocation%600%600");
         }
 
         private void WriteLevelData(StreamWriter sw)

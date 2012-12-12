@@ -6,28 +6,31 @@
 
     public class Sprite : DrawableObject
     {
-        public int depth;
         private bool isTiled;
         private Vector2 tiledDimensions;
         private int _tiledWidth;
         private int _tiledHeight;
 
-        public Sprite(string texture, Vector2 pos, int depth, bool isTiled=false, int tiledWidth = 0, int tiledHeight=0)
+        public Sprite(string texture, Vector2 pos, int depth, Vector2 scale, bool isTiled = false, float rotation = 0, bool collidable = false, int tiledWidth = 0, int tiledHeight = 0)
         {
             Identifier = texture;
             this.Texture = Globals.Content.Load<Texture2D>(texture);
-            this.depth = depth;
+            SetDrawDepthRange(1, 99);
+            SetDepth(depth);
+            Rotation = rotation;
+            this.scale = scale;
+            Collidable = collidable;
             this.Position = pos + new Vector2(Texture.Width/2, Texture.Height/2);
             this.isTiled = isTiled;
+
             _tiledHeight = tiledHeight;
             _tiledWidth = tiledWidth;
-            //SrcRectangle = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
             SetTilingDimensions(isTiled, tiledWidth, tiledHeight);
         }
 
         public override string GetSaveData()
         {
-            return "Sprite%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + depth + "%" + isTiled + "%" + _tiledWidth + "%" + _tiledHeight;
+            return "Sprite%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + Depth + "%" + scale.X + "%" + isTiled + "%" + Rotation + "%" + Collidable + "%" + _tiledWidth + "%" + _tiledHeight;
         }
 
         private void SetTilingDimensions(bool isTiled, int tiledWidth, int tiledHeight)

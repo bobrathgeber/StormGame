@@ -13,9 +13,7 @@ namespace StormGame
         {
             Texture = Globals.Content.Load<Texture2D>(Tex);
             InitializeVariables(Pos, Scale);
-            this.Invisible = Invisible;
-            //SrcRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
-            
+            this.Invisible = Invisible;            
         }
 
         public override string GetSaveData()

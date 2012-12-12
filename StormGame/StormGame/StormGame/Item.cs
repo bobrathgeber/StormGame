@@ -20,7 +20,6 @@ namespace StormGame
         public bool CooldownReady;
         private float Cooldown;
         private float time;
-        private float radius;
         private float pickUpDelay;
         private float pickUpDelayTimer;
 
@@ -53,6 +52,7 @@ namespace StormGame
         {
             ObjectType = DrawableObjectType.Item;
             this.type = itemType;
+            Collidable = false;
             LoadContent();
         }
 

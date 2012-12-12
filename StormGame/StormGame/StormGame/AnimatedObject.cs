@@ -6,11 +6,12 @@ namespace StormGame
 {
     class AnimatedObject : DrawableObject
     {
-        public AnimatedObject(string Tex, Vector2 Pos, Vector2 Scale, float rotation, float framerate)
+        public AnimatedObject(string Tex, Vector2 Pos, Vector2 Scale, float rotation, float framerate, float depth, bool collidable = false)
         {
             Identifier = Tex;
             frameRate = frameRate;
             Position = Pos;
+            scale = Scale;
             Rotation = rotation;
             Texture = Globals.Content.Load<Texture2D>(Identifier);
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>(Identifier + "SpriteMap");
@@ -20,7 +21,7 @@ namespace StormGame
 
         public override string GetSaveData()
         {
-            return "AnimatedObject%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + Rotation + "%" + frameRate;
+            return "AnimatedObject%" + Identifier + "%" + Position.X + "%" + Position.Y + "%" + scale.X + "%" + Rotation + "%" + frameRate  + "%" + Depth + "%" + Collidable;
         }
     }
 }

@@ -39,15 +39,14 @@ namespace StormGame
             drawableObjects.Add(2, new Cow(new Vector2(0)));
             drawableObjects.Add(3, new LargeDebris());
             drawableObjects.Add(4, new GenericDestructible(new Vector2(0), "House1", 1.0f, 15));
-            //drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "Walmart", 1.0f, 15));
-            //drawableObjects[5].scale = new Vector2(0.1f, 0.1f);
             drawableObjects.Add(5, new GenericDestructible(new Vector2(0), "LeftFence", 1.0f, 15));
             drawableObjects.Add(6, new GenericDestructible(new Vector2(0), "RightFence", 1.0f, 15));
-            drawableObjects.Add(7, new AnimatedObject("RiverTileStraight", new Vector2(0), Vector2.One, 0, 0.2f));
-            drawableObjects.Add(8, new AnimatedObject("RiverTileCorner", new Vector2(0), Vector2.One, 0, 0.2f));
+            drawableObjects.Add(7, new AnimatedObject("RiverTileStraight", new Vector2(0), Vector2.One, 0, 0.2f, 1, true));
+            drawableObjects.Add(8, new AnimatedObject("RiverTileCorner", new Vector2(0), Vector2.One, 0, 0.2f, 1, true));
+            drawableObjects.Add(9, new Sprite("Tree", Vector2.Zero, 1, Vector2.One, false, 0, true));
 
-            backgroundTiles.Add(0, new Sprite("Tiles/DesertTile256",Vector2.Zero, 0, false));
-            backgroundTiles.Add(1, new Sprite("Tiles/GrassTile256",Vector2.Zero, 0, false));
+            backgroundTiles.Add(0, new Sprite("Tiles/DesertTile256",Vector2.Zero, 0, Vector2.One, false));
+            backgroundTiles.Add(1, new Sprite("Tiles/GrassTile256", Vector2.Zero, 0, Vector2.One, false));
 
             for (int i = 0; i < drawableObjects.Count; i++)
                 drawableObjects[i].Update();

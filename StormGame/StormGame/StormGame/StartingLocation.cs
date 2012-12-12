@@ -12,6 +12,7 @@ namespace StormGame
             Texture = Globals.Content.Load<Texture2D>("startingLocation");
             Invisible = true;
             isAlive = false;
+            Collidable = false;
         }
 
         public override string GetSaveData()

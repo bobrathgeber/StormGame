@@ -70,7 +70,7 @@ namespace StormGame
         public bool CheckCollision(Vector2 v)
         {
             bool isColliding = BoundingBox.Contains(new Point((int)v.X, (int)v.Y));
-            if (isAlive)
+            if (Collidable)
                 return isColliding;
             else
                 return false;
@@ -90,7 +90,7 @@ namespace StormGame
             if (animation != null && (!Invisible || Globals.editorMode))
                 animationPlayer.Draw(Globals.GameTime, Globals.SpriteBatch, Position, SpriteEffects.None, Rotation, scale, Origin, _color);
             else if (Texture != null && (!Invisible || Globals.editorMode))
-                Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, (Depth/1000));
+                Globals.SpriteBatch.Draw(Texture, Position, SrcRectangle, _color, Rotation, Origin, scale, SpriteEffects.None, 0);
 
             if (this.Selected && Globals.editorMode)
                 DrawBoundingBox();          

@@ -24,7 +24,8 @@ namespace StormGame
 
         public override DrawableObject onDeath(Storm storm)
         {
-            isAlive = false;    
+            isAlive = false;
+            Collidable = false;
 
             Item item = GetRandomItem();
             if (item != null)
