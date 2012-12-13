@@ -18,7 +18,6 @@ Content\Sounds\click.xnb
 Content\Sounds\debrisHit1.xnb
 Content\Sounds\debrisHit2.xnb
 Content\Sounds\debrisHit3.xnb
-Content\Sounds\debrisHit4.xnb
 Content\Tiles\DesertTile256.xnb
 Content\Tiles\GrassTile256.xnb
 Content\Cow.xnb
@@ -46,3 +45,8 @@ Content\RiverTileStraight.xnb
 Content\RiverTileCornerSpriteMap.xnb
 Content\RiverTileStraightSpriteMap.xnb
 Content\Tree.xnb
+Content\MainMenuWind.xnb
+Content\menubg.xnb
+Content\Sounds\debrisHit0.xnb
+Content\Sounds\3 Doors Down - Krptonite.xnb
+Content\Sounds\3 Doors Down - Krptonite.wma

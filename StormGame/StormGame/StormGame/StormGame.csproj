@@ -79,6 +79,7 @@
     <Compile Include="AnimationPlayer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AudioManager.cs" />
     <Compile Include="BackMenuItem.cs" />
     <Compile Include="BlockerObject.cs" />
     <Compile Include="Button.cs" />

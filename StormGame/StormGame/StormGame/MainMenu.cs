@@ -13,7 +13,6 @@ namespace StormGame
 
     class MainMenu
     {
-        private Texture2D backgroundImage;
         private List<MenuItem> mainMenuItems;
         private List<MenuItem> currentMenuItems;
         private MenuItem selectedMenuItem;
@@ -21,7 +20,11 @@ namespace StormGame
         private const int MENU_ITEM_Y = 400;
         private const int MENU_ITEM_SPACING = 50;
         private SpriteFont font;
-        private SoundEffect click;
+
+        //Visual Background Variables
+        private Texture2D windGraphic;
+        private Texture2D background1;
+        private int[,] windCoordinates;
 
         public MainMenu()
         {
@@ -38,15 +41,42 @@ namespace StormGame
             mainMenuItems.Add(new OptionsMenu("Options"));
             mainMenuItems.Add(new ExitMenu("Exit"));
 
-            click = Globals.Content.Load<SoundEffect>("Sounds/click");
-
             DisplayMenu(mainMenuItems);
-            
+            background1 = Globals.Content.Load<Texture2D>("menubg");
+            windGraphic = Globals.Content.Load<Texture2D>("MainMenuWind");
+            windCoordinates = new int[,] { { -250, 10 }, { -220, 20 }, { -300, 40 }, { 0, 360 }, 
+                                           { -350, 66 }, { -200, 142 }, { -400, 155 }, { -320, 187 },
+                                           { -450, 166 }, { -300, 432 }, { -400, 225 }, { -220, 287 },
+                                           { -550, 266 }, { -400, 222 }, { -400, 445 }, { -120, 387 },
+                                           { -650, 366 }, { -400, 272 }, { -500, 255 }, { -220, 487 },
+                                           { -750, 466 }, { -500, 552 }, { -500, 355 }, { -420, 587 },
+                                           { -750, 566 }, { -600, 772 }, { -300, 455 }, { -220, 687 },
+                                           { 250, 10 }, { 220, 20 }, { 300, 40 }, { 50, 360 }, 
+                                           { 350, 66 }, { 200, 142 }, { 400, 155 }, { 320, 187 },
+                                           { 450, 166 }, { 300, 432 }, { 400, 225 }, { 220, 287 },
+                                           { 550, 266 }, { 400, 222 }, { 400, 445 }, { 120, 387 },
+                                           { 650, 366 }, { 400, 272 }, { 500, 255 }, { 220, 487 },
+                                           { 750, 466 }, { 500, 552 }, { 500, 355 }, { 420, 587 },
+                                           { 750, 566 }, { 600, 772 }, { 300, 455 }, { 220, 687 },
+                                           { 650, 10 }, { 720, 20 }, { 800, 200 }, { 900, 360 }, 
+                                           { 550, 66 }, { 400, 142 }, { 400, 255 }, { 420, 657 }};
         }
 
         public void Update()
         {
             UpdateMenuItems();
+            UpdateWind();
+        }
+
+        private void UpdateWind()
+        {
+            for (int i = 0; i < windCoordinates.Length/2; i++)
+            {                
+                if(windCoordinates[i,0] > Globals.SCREEN_WIDTH)
+                    windCoordinates[i, 0] -= (int)(Globals.SCREEN_WIDTH * 1.5f) ;
+                else
+                    windCoordinates[i, 0] += 50;
+            }
         }
 
         private void UpdateMenuItems()
@@ -65,7 +95,7 @@ namespace StormGame
                     {
                         mi.Deselect();
                         mi.Activate(this);
-                        click.Play();
+                        Globals.audioManager.PlaySound("Sounds/click");
                     }
                     break;
                 }
@@ -76,12 +106,19 @@ namespace StormGame
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-
+            spriteBatch.Begin();            
+            Globals.SpriteBatch.Draw(background1, Vector2.Zero, Color.White);
+            DrawWind();
             foreach (MenuItem mi in currentMenuItems)
                 spriteBatch.DrawString(font, mi.name, mi.position, mi.color);
 
             spriteBatch.End();
+        }
+
+        private void DrawWind()
+        {
+            for (int i = 0; i < windCoordinates.Length/2; i++)
+                Globals.SpriteBatch.Draw(windGraphic, new Vector2(windCoordinates[i, 0], windCoordinates[i, 1]), Color.White);
         }
 
         public void DisplayMenu(List<MenuItem> newMenu)
@@ -95,7 +132,7 @@ namespace StormGame
             for (int i = 0; i < menu.Count; i++)
             {
                 if(menu[i].name == "Back")
-                    menu[i].SetPosition(new Vector2(Globals.SCREEN_WIDTH - 350, Globals.SCREEN_HEIGHT -50), font);
+                    menu[i].SetPosition(new Vector2(Globals.SCREEN_WIDTH - 350, Globals.SCREEN_HEIGHT -150), font);
                 else
                     menu[i].SetPosition(new Vector2(MENU_ITEM_X, MENU_ITEM_Y + (i * (14 + MENU_ITEM_SPACING))), font);
             }

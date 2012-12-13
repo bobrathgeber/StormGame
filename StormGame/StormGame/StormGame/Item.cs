@@ -30,7 +30,7 @@ namespace StormGame
         protected bool inInventory;
         public bool pickupBlocked = false;
 
-        private List<SoundEffect> hitSounds;
+        private List<string> hitSounds;
 
         //Debris Variables
         float orbitRadius;
@@ -66,11 +66,11 @@ namespace StormGame
             SetDrawDepthRange(200, 299);
             SetDepth(100);
             _debugLine = new Texture2D(Globals.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            hitSounds = new List<SoundEffect>();
-            hitSounds.Add(Globals.Content.Load<SoundEffect>("Sounds/debrisHit1"));
-            hitSounds.Add(Globals.Content.Load<SoundEffect>("Sounds/debrisHit2"));
-            hitSounds.Add(Globals.Content.Load<SoundEffect>("Sounds/debrisHit3"));
-            hitSounds.Add(Globals.Content.Load<SoundEffect>("Sounds/debrisHit4"));
+            hitSounds = new List<string>();
+            hitSounds.Add("Sounds/debrisHit1");
+            hitSounds.Add("Sounds/debrisHit2");
+            hitSounds.Add("Sounds/debrisHit3");
+            hitSounds.Add("Sounds/debrisHit4");
         }
 
         public virtual void Update()
@@ -183,7 +183,7 @@ namespace StormGame
         {
             Random rand = new Random();
             int num = rand.Next(4);
-            hitSounds[num].Play();
+            Globals.audioManager.PlaySound("Sounds/debrisHit" + num.ToString());
         }
 
         public void Move(Vector2 center, GameTime gameTime)

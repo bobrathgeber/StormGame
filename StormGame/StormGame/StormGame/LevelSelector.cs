@@ -110,7 +110,7 @@ namespace StormGame
                     if (button.isSelected)
                     {
                         //var line = button.data.Split('%');
-                        Level level = new Level("Levels/" + button.data);
+                        Level level = new Level("Levels/" + button.data);                        
                         game.LoadNewLevel(level);
                     }
                 }    

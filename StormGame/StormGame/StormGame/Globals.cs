@@ -19,6 +19,7 @@ namespace StormGame
         public static Game1 game { get; set; }
         public static GameTime GameTime { get; set; }
         public static Vector2 cameraPosition { get; set; }
+        public static AudioManager audioManager { get; set; }
 
         public static MouseState mouseState;
         public static MouseState oldMouseState;

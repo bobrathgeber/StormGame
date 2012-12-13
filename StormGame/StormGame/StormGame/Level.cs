@@ -350,7 +350,7 @@ namespace StormGame
             }
             else
             {
-                if (Globals.mouseState.RightButton == ButtonState.Pressed && !paused && !Globals.editorMode)
+                if (Globals.mouseState.LeftButton == ButtonState.Pressed && !paused && !Globals.editorMode)
                 {
                     Vector2 targetClick = new Vector2(Globals.mouseState.X, Globals.mouseState.Y) + _camera.Position;
                     Vector2 directionVector = (targetClick - storm.Position);
@@ -464,7 +464,7 @@ namespace StormGame
 
                     while (obj.CheckCollision(storm.Position))
                     {
-                        storm.Velocity *= 1.001f;
+                        storm.Velocity *= 1.01f;
                         storm.ApplyVelocity();
                     }
 

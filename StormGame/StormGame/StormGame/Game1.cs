@@ -17,7 +17,6 @@ namespace StormGame
         LevelSelect = 1,
         Gameplay = 2,
         ScoreScreen = 3
-
     }
 
     /// <summary>
@@ -34,6 +33,7 @@ namespace StormGame
 
         MainMenu mainMenu;
         private Level LoadedLevel;
+        private AudioManager audioManager;
 
 
 
@@ -43,8 +43,8 @@ namespace StormGame
             Content.RootDirectory = "Content";
 
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 800;
-            graphics.PreferredBackBufferWidth = 1200;
+            graphics.PreferredBackBufferHeight = Globals.SCREEN_HEIGHT;
+            graphics.PreferredBackBufferWidth = Globals.SCREEN_WIDTH;
         }
 
         /// <summary>
@@ -58,6 +58,7 @@ namespace StormGame
             // TODO: Add your initialization logic here
             gameState = GameState.LevelSelect;
             mainMenu = new MainMenu();
+            audioManager = new AudioManager(this);
 
             base.Initialize();
         }
@@ -80,12 +81,25 @@ namespace StormGame
             Globals.GraphicsDevice = GraphicsDevice;
             Globals.gameState = gameState;
             Globals.game = this;
-
-
+            LoadAudio();
             mainMenu.LoadContent(Content);
 
-
             // TODO: use this.Content to load your game content here
+        }
+
+        private void LoadAudio()
+        {
+            Components.Add(audioManager);
+            //audioManager.MusicVolume = 0.1f;
+            Globals.audioManager = audioManager;
+            audioManager.LoadSound("Sounds/click");
+            audioManager.LoadSound("Sounds/debrisHit1");
+            audioManager.LoadSound("Sounds/debrisHit2");
+            audioManager.LoadSound("Sounds/debrisHit3");
+            audioManager.LoadSound("Sounds/debrisHit0");
+            audioManager.LoadSong("Sounds/3 Doors Down - Krptonite");
+
+            Globals.audioManager.PlaySong("Sounds/3 Doors Down - Krptonite", true);
         }
 
         /// <summary>
@@ -158,21 +172,19 @@ namespace StormGame
 
         public void LoadNewLevel(Level level)
         {
+            Globals.audioManager.FadeToNewSong(0.0f, new TimeSpan(0, 0, 1), "Sounds/3 Doors Down - Krptonite");
             LoadedLevel = level;
-            //LoadedLevel.LoadContent(test);
             Globals.gameState = GameState.Gameplay;
         }
 
         // Records mouse and keyboard states each frame.
         private void GetInputs()
         {
-
             Globals.oldMouseState = Globals.mouseState;
             Globals.oldKeyboardState = Globals.keyboardState;
 
             Globals.mouseState = Mouse.GetState();
             Globals.keyboardState = Keyboard.GetState();
-
         }
     }
 }
