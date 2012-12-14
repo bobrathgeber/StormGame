@@ -313,7 +313,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sounds\3 Doors Down - Krptonite.mp3">
+    <Compile Include="Songs\3 Doors Down - Krptonite.mp3">
       <Name>3 Doors Down - Krptonite</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
@@ -324,6 +324,13 @@
       <Name>TitleImage</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Songs\Raptor Call of the Shadows - Bravo Sector.mp3">
+      <Name>Raptor Call of the Shadows - Bravo Sector</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

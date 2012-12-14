@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
 
 namespace StormGame
 {
@@ -95,16 +96,32 @@ namespace StormGame
         private void LoadAudio()
         {
             Components.Add(audioManager);
-            //audioManager.MusicVolume = 0.1f;
+            audioManager.MusicVolume = 0.1f;
             Globals.audioManager = audioManager;
-            audioManager.LoadSound("Sounds/click");
-            audioManager.LoadSound("Sounds/debrisHit1");
-            audioManager.LoadSound("Sounds/debrisHit2");
-            audioManager.LoadSound("Sounds/debrisHit3");
-            audioManager.LoadSound("Sounds/debrisHit0");
-            audioManager.LoadSong("Sounds/3 Doors Down - Krptonite");
 
-            Globals.audioManager.PlaySong("Sounds/3 Doors Down - Krptonite", true);
+            // Make a reference to a directory.
+            DirectoryInfo di = new DirectoryInfo("../../../../StormGameContent/Sounds/");
+
+            // Get a reference to each file in that directory.
+            FileInfo[] fiArr = di.GetFiles();
+
+            // Display the names of the files.
+            for (int i = 0; i < fiArr.Length; i++)
+            {
+                var noExtFile = fiArr[i].Name.Split('.');
+                audioManager.LoadSound("Sounds/" + noExtFile[0]);
+            }
+
+            //Songs
+            di = new DirectoryInfo("../../../../StormGameContent/Songs/");
+            fiArr = di.GetFiles();
+            for (int i = 0; i < fiArr.Length; i++)
+            {
+                var noExtFile = fiArr[i].Name.Split('.');
+                audioManager.LoadSong("Songs/" + noExtFile[0]);
+            }
+
+            Globals.audioManager.PlaySong("Songs/3 Doors Down - Krptonite", true);
         }
 
         /// <summary>
@@ -185,7 +202,7 @@ namespace StormGame
 
         public void LoadNewLevel(Level level)
         {
-            Globals.audioManager.FadeToNewSong(0.0f, new TimeSpan(0, 0, 1), "Sounds/3 Doors Down - Krptonite");
+            Globals.audioManager.FadeToNewSong(0.0f, new TimeSpan(0, 0, 1), "Songs/Raptor Call of the Shadows - Bravo Sector");
             LoadedLevel = level;
             Globals.gameState = GameState.Gameplay;
         }
