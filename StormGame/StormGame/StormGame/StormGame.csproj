@@ -105,6 +105,7 @@
     <Compile Include="LevelMenuItem.cs" />
     <Compile Include="LevelSelector.cs" />
     <Compile Include="LevelSelectorButton.cs" />
+    <Compile Include="TitleScreen.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="NewGameMenu.cs" />

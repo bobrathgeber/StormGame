@@ -16,7 +16,8 @@ namespace StormGame
     {
         LevelSelect = 1,
         Gameplay = 2,
-        ScoreScreen = 3
+        ScoreScreen = 3,
+        TitleScreen = 4
     }
 
     /// <summary>
@@ -34,7 +35,7 @@ namespace StormGame
         MainMenu mainMenu;
         private Level LoadedLevel;
         private AudioManager audioManager;
-
+        private TitleScreen titleScreen;
 
 
         public Game1()
@@ -56,9 +57,13 @@ namespace StormGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            gameState = GameState.LevelSelect;
+            gameState = GameState.TitleScreen;
             mainMenu = new MainMenu();
             audioManager = new AudioManager(this);
+            Texture2D titlepic = Content.Load<Texture2D>("TitleImage");
+            var rec = new Rectangle((int)Globals.SCREEN_CENTER.X - (int)(titlepic.Bounds.Width / 2), (int)Globals.SCREEN_CENTER.Y - (int)(titlepic.Bounds.Height / 2), (int)titlepic.Bounds.Width, (int)titlepic.Bounds.Height);
+            titleScreen = new TitleScreen(titlepic, rec, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), false);
+            titleScreen.AddImage(titlepic);
 
             base.Initialize();
         }
@@ -124,6 +129,11 @@ namespace StormGame
 
             switch (Globals.gameState)
             {
+                case GameState.TitleScreen:
+                    titleScreen.Update(gameTime);
+                    if (titleScreen.Finished)
+                        Globals.gameState = GameState.LevelSelect;
+                    break;
                 case GameState.LevelSelect:
                     mainMenu.Update();
                     break;
@@ -150,12 +160,15 @@ namespace StormGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.BlueViolet);
+            GraphicsDevice.Clear(Color.Black);
 
 
 
             switch (Globals.gameState)
             {
+                case GameState.TitleScreen:
+                    titleScreen.Draw(spriteBatch);
+                    break;
 
                 case GameState.LevelSelect:
                     mainMenu.Draw(spriteBatch);
