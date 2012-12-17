@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace StormGame
 {
+    public enum MenuType
+    {
+        Main = 1,
+        NewGame = 2,
+        Options = 3
+    }
     //Background Image
     //List of Menu Items
     //Manage Menu Items
@@ -15,11 +21,11 @@ namespace StormGame
     {
         private List<MenuItem> mainMenuItems;
         private List<MenuItem> currentMenuItems;
-        private MenuItem selectedMenuItem;
         private const int MENU_ITEM_X = 150;
         private const int MENU_ITEM_Y = 400;
         private const int MENU_ITEM_SPACING = 50;
         private SpriteFont font;
+        private MenuType _menu;
 
         //Visual Background Variables
         private Texture2D windGraphic;
@@ -28,16 +34,14 @@ namespace StormGame
 
         public MainMenu()
         {
-
         }
 
         public void LoadContent(ContentManager content)
         {
-            //backgroundImage = content.Load<Texture2D>("MenuBG");
+            _menu = MenuType.Main;
             mainMenuItems = new List<MenuItem>();
             font = content.Load<SpriteFont>("MenuFont");
             mainMenuItems.Add(new NewGameMenu("New Game"));
-            //mainMenuItems.Add(new OptionsMenu("Load"));
             mainMenuItems.Add(new OptionsMenu("Options"));
             mainMenuItems.Add(new ExitMenu("Exit"));
 
@@ -64,6 +68,19 @@ namespace StormGame
 
         public void Update()
         {
+            switch (_menu)
+            {
+                case MenuType.Main:
+
+                    break;
+                case MenuType.NewGame:
+
+                    break;
+                case MenuType.Options:
+
+                    break;
+            }
+            
             UpdateMenuItems();
             UpdateWind();
         }
@@ -83,10 +100,10 @@ namespace StormGame
         {
             foreach (MenuItem mi in currentMenuItems)
             {
+                mi.Update();
                 if (mi.CheckHover())
                 {
                     mi.Select();
-                    selectedMenuItem = mi;
                     foreach (MenuItem mi2 in currentMenuItems)
                         if (mi2 != mi)
                             mi2.Deselect();
@@ -109,8 +126,22 @@ namespace StormGame
             spriteBatch.Begin();            
             Globals.SpriteBatch.Draw(background1, Vector2.Zero, Color.White);
             DrawWind();
+
+            switch (_menu)
+            {
+                case MenuType.Main:
+
+                    break;
+                case MenuType.NewGame:
+
+                    break;
+                case MenuType.Options:
+
+                    break;
+            }
+
             foreach (MenuItem mi in currentMenuItems)
-                spriteBatch.DrawString(font, mi.name, mi.position, mi.color);
+                mi.Draw(spriteBatch);
 
             spriteBatch.End();
         }

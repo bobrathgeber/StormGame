@@ -26,9 +26,7 @@ namespace StormGame
         public MenuItem(string name)
         {
             this.name = name;
-            Deselect();
-
-            
+            Deselect();            
         }
 
         protected void CreateBoundingBox(SpriteFont font)
@@ -74,6 +72,13 @@ namespace StormGame
             else
                 return false;
 
+        }
+
+        public virtual void Update() { }
+
+        public virtual void Draw(SpriteBatch spritebatch)
+        {
+            spritebatch.DrawString(Globals.Font1, name, position, color);
         }
 
         public virtual void Activate(MainMenu mainMenu) { }

@@ -2,6 +2,10 @@
 <XnaContent>
 <Asset Type="System.Collections.Generic.Dictionary[System.String, Microsoft.Xna.Framework.Rectangle]">
 <Item><Key>Good-0</Key><Value>0 0 90 28</Value></Item>
+  <Item>
+    <Key>Poor-0</Key>
+    <Value>0 0 90 28</Value>
+  </Item>
 <Item><Key>Dead-0</Key><Value>0 29 90 28</Value></Item>
 </Asset>
 </XnaContent>

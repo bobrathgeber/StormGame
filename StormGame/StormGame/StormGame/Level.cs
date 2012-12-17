@@ -630,7 +630,7 @@ namespace StormGame
                     {
                         if (line[1] == "Debris")
                         {
-                            if (line[2] == "cow")
+                            if (line[2] == "Cow")
                                 drawableObjects.Add(new Cow(new Vector2(float.Parse(line[3]), float.Parse(line[4]))));
                             if (line[2] == "largedebris")
                                 drawableObjects.Add(new LargeDebris(new Vector2(float.Parse(line[3]), float.Parse(line[4]))));
