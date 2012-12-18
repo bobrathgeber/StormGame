@@ -20,17 +20,17 @@ namespace StormGame
         private bool _skippable;
         private float _currentAlpha = 0;
         private TitleImageState _imageState = TitleImageState.FadingIn;
-        private Rectangle _sourceRectangle;
+        private Vector2 _screenSize;
 
 
         public bool Finished = false;
 
-        public TitleScreen(Texture2D image, Rectangle drawingRec, TimeSpan displayDuration, TimeSpan fadeSpeed, bool skippable)
+        public TitleScreen(Texture2D image, Vector2 ScreenSize, TimeSpan displayDuration, TimeSpan fadeSpeed, bool skippable)
         {
             _displayDuration = displayDuration;
             _fadeSpeed = fadeSpeed;
             _skippable = skippable;
-            _sourceRectangle = drawingRec;
+            _screenSize = ScreenSize;
             _images = new List<Texture2D>();
             AddImage(image);
             _oldKeyboardState = Keyboard.GetState();
@@ -94,8 +94,10 @@ namespace StormGame
         public void Draw(SpriteBatch spriteBatch)
         {            
             var color = new Color(1, 1, 1, _currentAlpha);
+            Vector2 position = new Vector2(_screenSize.X/2 - _images[_currentImage].Bounds.Width / 2, _screenSize.Y/2 - _images[_currentImage].Bounds.Height / 2);
+
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            spriteBatch.Draw(_images[_currentImage], _sourceRectangle, color);
+            spriteBatch.Draw(_images[_currentImage], position, color);
             spriteBatch.End();
             Console.WriteLine(_imageState + " " + _currentAlpha);
         }

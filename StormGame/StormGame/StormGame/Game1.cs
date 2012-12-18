@@ -62,9 +62,8 @@ namespace StormGame
             mainMenu = new MainMenu();
             audioManager = new AudioManager(this);
             Texture2D titlepic = Content.Load<Texture2D>("TitleImage");
-            var rec = new Rectangle((int)Globals.SCREEN_CENTER.X - (int)(titlepic.Bounds.Width / 2), (int)Globals.SCREEN_CENTER.Y - (int)(titlepic.Bounds.Height / 2), (int)titlepic.Bounds.Width, (int)titlepic.Bounds.Height);
-            titleScreen = new TitleScreen(titlepic, rec, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), true);
-            titleScreen.AddImage(titlepic);
+            titleScreen = new TitleScreen(titlepic, new Vector2(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT), TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(4), true);
+            titleScreen.AddImage(Content.Load<Texture2D>("TitleInfo"));
 
             base.Initialize();
         }
