@@ -15,7 +15,7 @@ namespace StormGame
 
         public override void Activate(MainMenu mainMenu)
         {
-            Level level = new Level("../../../Levels/" + name);
+            Level level = new Level("Levels/" + name);
             Globals.game.LoadNewLevel(level);
         }
     }

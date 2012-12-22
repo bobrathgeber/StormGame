@@ -99,7 +99,7 @@ namespace StormGame
             Globals.audioManager = audioManager;
 
             // Make a reference to a directory.
-            DirectoryInfo di = new DirectoryInfo("../../../../StormGameContent/Sounds/");
+            DirectoryInfo di = new DirectoryInfo("Content/Sounds/");
 
             // Get a reference to each file in that directory.
             FileInfo[] fiArr = di.GetFiles();
@@ -112,13 +112,15 @@ namespace StormGame
             }
 
             //Songs
-            di = new DirectoryInfo("../../../../StormGameContent/Songs/");
-            fiArr = di.GetFiles();
-            for (int i = 0; i < fiArr.Length; i++)
-            {
-                var noExtFile = fiArr[i].Name.Split('.');
-                audioManager.LoadSong("Songs/" + noExtFile[0]);
-            }
+            //di = new DirectoryInfo("Content/Songs/");
+            //fiArr = di.GetFiles();
+            //for (int i = 0; i < fiArr.Length; i++)
+            //{
+            //    var noExtFile = fiArr[i].Name.Split('.');
+            //    audioManager.LoadSong("Songs/" + noExtFile[0]);
+            //}
+            audioManager.LoadSong("Songs/3 Doors Down - Krptonite");
+            audioManager.LoadSong("Songs/Raptor Call of the Shadows - Bravo Sector");
 
             Globals.audioManager.PlaySong("Songs/3 Doors Down - Krptonite", true);
         }

@@ -105,17 +105,8 @@ namespace StormGame
 
     public enum TitleImageState
     {
-        /// <summary>
-        /// Return to pre-fade volume
-        /// </summary>
         FadingIn,
-        /// <summary>
-        /// Snap to fade target volume
-        /// </summary>
         FullAlpha,
-        /// <summary>
-        /// Keep current volume
-        /// </summary>
         FadingOut
     }
 }

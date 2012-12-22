@@ -229,7 +229,7 @@ namespace StormGame
             {
                 if (Globals.oldKeyboardState.IsKeyUp(key))
                 {
-                    if (key == Keys.Back) // overflows
+                    if (key == Keys.Back && textString != "") // overflows
                         textString = textString.Remove(textString.Length - 1, 1);
                     else
                         if (key == Keys.Space)
@@ -537,7 +537,8 @@ namespace StormGame
         private void LoadLevelFile(string fileName)
         {
             string data;
-            using (StreamReader sr = new StreamReader(fileName))
+            System.IO.Stream stream = TitleContainer.OpenStream(fileName);
+            using (StreamReader sr = new StreamReader(stream))
             {
                 while ((data = sr.ReadLine()) != null)
                 {
@@ -651,7 +652,7 @@ namespace StormGame
 
         private void SaveLevelFile(string levelName)
         {
-            string filePath = "../../../Levels/" + levelName + ".txt";
+            string filePath = "Levels/" + levelName + ".txt";
 
             using (FileStream stream = File.Open(filePath, FileMode.Create))
             {

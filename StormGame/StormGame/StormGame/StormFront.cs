@@ -14,6 +14,8 @@ namespace StormGame
         public StormFront(Vector2 pos)
         {
             Identifier = "Storm Front";
+            SetDrawDepthRange(321, 350);
+            SetDepth(321);
             Texture = Globals.Content.Load<Texture2D>("StormFront");
             Dictionary<string, Rectangle> spriteMap = Globals.Content.Load<Dictionary<string, Rectangle>>("StormFrontSpriteMap");
             animation = new Animation(Texture, spriteMap);
